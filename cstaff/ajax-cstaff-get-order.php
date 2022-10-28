@@ -29,9 +29,9 @@ if ($rowcount > 0) {
         $odr_detail_result = $mysqli->query($odr_detail_query);
         while ($odr_detail_row = $odr_detail_result->fetch_array()) {
             if ($odr_detail_row["odr_details_note"] != "") {
-                $details .= $odr_detail_row["odr_details_amount"] . "x" . $odr_detail_row["mitem_name"] . " (" . $odr_detail_row["odr_details_note"] . ")" . "<br/>";
+                $details .= $odr_detail_row["odr_details_amount"] . "x " . $odr_detail_row["mitem_name"] . " (" . $odr_detail_row["odr_details_note"] . ")" . "<br/>";
             } else {
-                $details .= $odr_detail_row["odr_details_amount"] . "x" . $odr_detail_row["mitem_name"] . " (No Remark)" . "<br/>";
+                $details .= $odr_detail_row["odr_details_amount"] . "x " . $odr_detail_row["mitem_name"] . " (No Remark)" . "<br/>";
             }
         }
 
