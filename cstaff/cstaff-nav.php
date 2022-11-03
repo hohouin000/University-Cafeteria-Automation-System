@@ -14,6 +14,9 @@
                 <li class="nav-item">
                     <a href="cstaff-mng-order.php" class="nav-link px-2 text-dark">Order Management</a>
                 </li>
+                <li class="nav-item">
+                    <a href="cstaff-report-generation.php" class="nav-link px-2 text-dark">Report Generation</a>
+                </li>
             </ul>
             <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">

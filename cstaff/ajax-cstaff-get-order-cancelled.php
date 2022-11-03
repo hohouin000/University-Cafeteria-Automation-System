@@ -8,7 +8,7 @@ if ($_SESSION["user_role"] != "CSTAFF") {
 if (isset($_SESSION["store_id"])) {
     $store_id = $_SESSION["store_id"];
 }
-$query = "SELECT * FROM odr WHERE store_id = {$store_id} AND odr_status = 'UNPD';";
+$query = "SELECT * FROM odr WHERE store_id = {$store_id} AND odr_status = 'CXLD';";
 $result = $mysqli->query($query);
 $rowcount = mysqli_num_rows($result);
 
@@ -21,17 +21,17 @@ if ($rowcount > 0) {
 
         $odr_placedtime = (new Datetime($row["odr_placedtime"]))->format("F j, Y H:i");
 
-        $odr_query = "SELECT SUM(odr_details_amount*odr_details_price) AS total_price FROM odr_detail WHERE odr_id = {$row['odr_id']}";
+        $odr_query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$row['odr_id']}";
         $odr_arr = $mysqli->query($odr_query)->fetch_array();
-        $total_price = $odr_arr['total_price'];
+        $total_price = "RM " . $odr_arr['total_price'];
 
-        $odr_detail_query = "SELECT m.mitem_name,od.odr_details_amount,od.odr_details_note FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$row['odr_id']}";
+        $odr_detail_query = "SELECT m.mitem_name,od.odr_detail_amount,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$row['odr_id']}";
         $odr_detail_result = $mysqli->query($odr_detail_query);
         while ($odr_detail_row = $odr_detail_result->fetch_array()) {
-            if ($odr_detail_row["odr_details_note"] != "") {
-                $details .= $odr_detail_row["odr_details_amount"] . "x " . $odr_detail_row["mitem_name"] . " (" . $odr_detail_row["odr_details_note"] . ")" . "<br/>";
+            if ($odr_detail_row["odr_detail_remark"] != "") {
+                $details .= "<b>" . $odr_detail_row["odr_detail_amount"] . "</b>" . "<b>x</b> " . $odr_detail_row["mitem_name"] . " (" . $odr_detail_row["odr_detail_remark"] . ")" . "<br/>";
             } else {
-                $details .= $odr_detail_row["odr_details_amount"] . "x " . $odr_detail_row["mitem_name"] . " (No Remark)" . "<br/>";
+                $details .= "<b>" . $odr_detail_row["odr_detail_amount"] . "</b>"  . "<b>x</b> " . $odr_detail_row["mitem_name"] . "<br/>";
             }
         }
 
@@ -41,7 +41,7 @@ if ($rowcount > 0) {
             "odr_placedtime" => $odr_placedtime,
             "user_name" => $user_name,
             "total_price" => $total_price,
-            "odr_details" => $details
+            "odr_details" => $details,
         ];
     }
 } else {
@@ -51,7 +51,7 @@ if ($rowcount > 0) {
         "odr_placedtime" => '',
         "user_name" => '',
         "total_price" => '',
-        "odr_details" => ''
+        "odr_details" => '',
     ];
 }
 $return_array = array('data' => $data);
