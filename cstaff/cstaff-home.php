@@ -161,7 +161,7 @@
             labels: labels,
             datasets: [{
                 label: 'Recent Daily Sales',
-                backgroundColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgb(255, 99, 132)',
                 pointBackgroundColor: 'rgb(255, 255, 255)',
                 pointRadius: 3.5,
@@ -184,6 +184,12 @@
                                 return "RM" + value;
                             }
                         }
+                    }
+                },
+                elements: {
+                    line: {
+                        fill: false,
+                        tension: 0.4
                     }
                 },
                 hitRadius: 30,

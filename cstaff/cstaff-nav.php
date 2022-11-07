@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light shadow-sm mb-auto">
+<nav class="navbar cstaff-nav navbar-expand-md navbar-light fixed-top bg-light shadow-sm mb-auto">
     <div class="container-fluid mx-4">
         <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -18,6 +18,27 @@
         exit(1);
     }
     ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.1.0/dist/chartjs-plugin-datalabels.min.js" integrity="sha256-ObWzUwdMWsPTwdkX/Fy6qojnkW+RkgciyUrmSD3upw0=" crossorigin="anonymous"></script>
+    <style>
+        @media print {
+            canvas.mpChart {
+                min-height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                height: auto !important;
+                width: auto !important;
+            }
+
+            .admin-dashboard {
+                display: none !important;
+            }
+
+            .cstaff-nav {
+                display: none !important;
+            }
+        }
+    </style>
     <title>Report Summary | Cafeteria Staff</title>
 </head>
 
@@ -26,8 +47,17 @@
     $formatted_start_date = date("jS-M-Y", strtotime($start_date));
     $formatted_end_date = date("jS-M-Y", strtotime($end_date));
     ?>
-    <div class="container p-2 pb-0 mt-5 pt-3" id="admin-dashboard">
+    <div class="container admin-dashboard p-2 pb-0 mt-5 pt-3" id="admin-dashboard">
         <h2 class="pt-3 pb-5 display-6">Report Summary</h2>
+        <a class=" nav nav-item text-decoration-none text-muted" href="cstaff-report-generation.php">
+            <i class="bi bi-arrow-left-square me-2"></i>Go back</a>
+        <div class="row g-2 mb-5  justify-content-md-end">
+            <div class="col-auto">
+                <button type="button" onclick="window.print()" class="btn btn-outline-primary" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: 1rem; --bs-btn-font-size: .75rem;">Print</button>
+            </div>
+        </div>
+    </div>
+    <div class="container pb-0" id="div-report">
         <div ALIGN=CENTER>
             <b>
                 <h6>Report Summary Generated on <?php echo date("jS-M-Y H:ia") ?>
@@ -43,8 +73,6 @@
                 } ?>
             </p>
         </div>
-        <a class="nav nav-item text-decoration-none text-muted" href="cstaff-report-generation.php">
-            <i class="bi bi-arrow-left-square me-2"></i>Go back</a>
         <div class="row row-cols-2 row-cols-md-3 g-3 py-3">
             <div class="col">
                 <div class="card border-info">
@@ -176,11 +204,153 @@
                 </div>
             </div>
         </div>
+        <br />
+        <h4 class="border-top fw-light pt-3 mt-2">Menu Performance</h4>
+        <div id="div-mpMessage">
+            <p class="fw-light">None</p>
+        </div>
+        <div class="container p-2 pb-0 mt-2 mb-5 pt-3" style="text-align: center;" id="div-mpChart">
+            <canvas id="mpChart"></canvas>
+        </div>
     </div>
-
 
     <?php include('../footer.php'); ?>
     <?php include("../toast-message.php"); ?>
+    <?php
+    $query = "SELECT m.mitem_name, SUM(od.odr_detail_amount) AS total_amount, SUM(od.odr_detail_amount*od.odr_detail_price) AS sub_total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY mitem_name ORDER BY total_amount, sub_total;";
+    $result = $mysqli->query($query);
+    $rowcount = mysqli_num_rows($result);
+    if ($rowcount > 0) {
+        while ($row = $result->fetch_array()) {
+            $mitem_name[] = $row['mitem_name'];
+            $total_amount[] = $row['total_amount'];
+            $sub_total[] = $row['sub_total'];
+        }
+    ?>
+        <style type="text/css">
+            #div-mpMessage {
+                display: none;
+            }
+        </style>
+    <?php
+    } else {
+        $mitem_name = '';
+        $total_amount = '';
+        $sub_total = '';
+    ?>
+        <style type="text/css">
+            #div-mpChart {
+                display: none;
+            }
+        </style>
+
+    <?php
+    }
+    ?>
+    <script>
+        const legendMargin = {
+            id: 'legendMargin',
+            beforeInit(chart, legend, options) {
+                const fitValue = chart.legend.fit;
+
+                chart.legend.fit = function fit() {
+                    fitValue.bind(chart.legend)();
+                    return this.height += 30;
+                }
+
+            }
+
+        }
+        const labels = <?php echo json_encode($mitem_name) ?>;
+        const data = {
+            labels: labels,
+            datasets: [{
+                    label: 'Sub Total Sales (RM)',
+                    data: <?php echo json_encode($sub_total) ?>,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(93, 190, 255, 0.3)',
+                    stack: 'combined',
+                    type: 'bar',
+                },
+                {
+                    label: 'Total Amount Sold',
+                    data: <?php echo json_encode($total_amount) ?>,
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 255, 255)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                    stack: 'combined',
+
+                },
+            ]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                plugins: {
+                    datalabels: {
+                        formatter: (value, context) => context.datasetIndex === 1 ? value : '',
+                        backgroundColor: function(context) {
+                            return context.dataset.backgroundColor;
+                        },
+                        borderRadius: 3,
+                        color: 'black',
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: Math.round,
+                        padding: 2,
+                        align: 'end',
+                        anchor: 'center',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Menu Performance Chart',
+                    },
+                },
+                scales: {
+                    y: {
+                        stacked: true
+                    }
+                },
+                elements: {
+                    line: {
+                        fill: false,
+                        tension: 0.4
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: 35,
+                        right: 16,
+                        bottom: 10,
+                        left: 8
+                    }
+                },
+            },
+            plugins: [ChartDataLabels, legendMargin],
+        };
+
+        const myChart = new Chart(
+            document.getElementById('mpChart'),
+            config
+        );
+
+        function beforePrintHandler() {
+            for (let id in Chart.instances) {
+                Chart.instances[id].resize();
+            }
+        }
+
+        window.addEventListener('beforeprint', () => {
+            myChart.resize(1000, 1000);
+        });
+
+        window.addEventListener('afterprint', () => {
+            myChart.resize();
+        });
+    </script>
 </body>
 
 </html>

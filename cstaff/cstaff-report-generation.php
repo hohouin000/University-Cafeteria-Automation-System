@@ -55,8 +55,6 @@
             var end_date = new Date($('#end_date').val());
             if (start_date > end_date) {
                 alert('Start date cannot be larger than end date !');
-                $('#start_date').val('');
-                $('#end_date').val('');
                 return false;
             }
         });

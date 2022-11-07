@@ -98,6 +98,7 @@
                                 <th>Total Price</th>
                                 <th>Order Details</th>
                                 <th>Order Completion Time</th>
+                                <th></th>
                             </tr>
                         </thead>
                     </table>
@@ -166,7 +167,7 @@
                         data: 'odr_id',
                         render: function(data, type, row) {
                             if (data != '') {
-                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success me-1 my-1 btn-sm  btn-received " data-id="' + data + '"> Mark as Paid </a><a class="btn btn-outline-danger btn-sm btn-cancel" data-id="' + data + '"> Cancel </a></div>'
+                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success btn-sm  btn-received " data-id="' + data + '"> Mark as Paid </a><a class="btn btn-outline-danger btn-sm btn-cancel" data-id="' + data + '"> Cancel </a></div>'
                             } else {
                                 return ''
                             }
@@ -270,7 +271,18 @@
                     },
                     {
                         data: 'odr_compltime'
-                    }
+                    },
+                    {
+                        data: 'odr_id',
+                        render: function(data, type, row) {
+                            if (data != '') {
+                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success me-1 my-1 btn-sm  btn-generate-receipt " data-id="' + data + '"style="font-size:smaller;"> Generate Receipt </a>'
+                            } else {
+                                return ''
+                            }
+                        }
+
+                    },
                 ],
                 scrollY: 200,
                 scrollCollapse: true,
