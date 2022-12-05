@@ -63,7 +63,7 @@
                         data: 'store_pic',
                         render: function(data) {
                             if (data != '') {
-                                return '<img src="/fyp/img/store/' + data + "?" + new Date().getTime() + '"class="img-circle" width="125px" height="120px"/>'
+                                return '<img data-src="/fyp/img/store/' + data + "?" + new Date().getTime() + '"class="lozad img-fluid rounded" width="125px" height="120px"/>'
                             } else {
                                 return ''
                             }
@@ -96,7 +96,14 @@
 
                     },
                 ],
-                responsive: true
+                drawCallback: function() {
+                    lozad('.lozad', {
+                        load: function(el) {
+                            el.src = el.dataset.src;
+                            el.onload = function() {}
+                        }
+                    }).observe()
+                }
             });
 
             // Add Store AJAX Call Starts here

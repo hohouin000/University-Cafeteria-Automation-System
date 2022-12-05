@@ -18,27 +18,7 @@
         exit(1);
     }
     ?>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.1.0/dist/chartjs-plugin-datalabels.min.js" integrity="sha256-ObWzUwdMWsPTwdkX/Fy6qojnkW+RkgciyUrmSD3upw0=" crossorigin="anonymous"></script>
-    <style>
-        @media print {
-            canvas.mpChart {
-                min-height: 100%;
-                max-width: 100%;
-                max-height: 100%;
-                height: auto !important;
-                width: auto !important;
-            }
-
-            .admin-dashboard {
-                display: none !important;
-            }
-
-            .cstaff-nav {
-                display: none !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/report.css">
     <title>Report Summary | Cafeteria Staff</title>
 </head>
 
@@ -205,7 +185,7 @@
             </div>
         </div>
         <br />
-        <h4 class="border-top fw-light pt-3 mt-2">Menu Performance</h4>
+        <h4 class="border-top fw-light pt-3 mt-2">Menu Performance <h6>(Based on successful completed orders)</h6></h4>
         <div id="div-mpMessage">
             <p class="fw-light">None</p>
         </div>
@@ -279,13 +259,13 @@
                     pointBackgroundColor: 'rgb(255, 255, 255)',
                     backgroundColor: 'rgba(255, 99, 132, 0.3)',
                     stack: 'combined',
-
+                    type: 'bar',
                 },
             ]
         };
 
         const config = {
-            type: 'line',
+            type: 'bar',
             data: data,
             options: {
                 plugins: {

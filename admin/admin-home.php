@@ -26,7 +26,7 @@
       </svg> Welcome Back, <?php echo $_SESSION["user_fname"] . ' ' . $_SESSION["user_lname"] ?></h3>
 
     <!-- ADMIN GRID DASHBOARD -->
-    <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-3">
+    <div class="row row-cols-1 row-cols-lg-1 align-items-stretch g-4 py-3">
 
       <!-- GRID OF STORE -->
       <div class="col">

@@ -276,7 +276,7 @@
                         data: 'odr_id',
                         render: function(data, type, row) {
                             if (data != '') {
-                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success me-1 my-1 btn-sm  btn-generate-receipt " data-id="' + data + '"style="font-size:smaller;"> Generate Receipt </a>'
+                                return '<div class="d-grid gap-2 d-md-block"> <a href="cstaff-generate-receipt.php?odr_id=' + data + '" target="_blank" class="btn btn-outline-success me-1 my-1 btn-sm  btn-generate-receipt" style="font-size:smaller;"> Generate Receipt </a>'
                             } else {
                                 return ''
                             }

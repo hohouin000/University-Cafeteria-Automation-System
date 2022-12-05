@@ -13,7 +13,6 @@
         $store_id = $_SESSION["store_id"];
     }
     ?>
-
     <title>Menu Management | Cafeteria Staff</title>
 </head>
 
@@ -64,7 +63,7 @@
                         data: 'mitem_pic',
                         render: function(data) {
                             if (data != "") {
-                                return '<img src="../img/menu/' + data + "?" + new Date().getTime() + '"class="img-fluid rounded" width="125px" height="120px"/>'
+                                return '<img data-src="../img/menu/' + data + "?" + new Date().getTime() + '"class="lozad img-fluid rounded" width="125px" height="120px"/>'
                             } else {
                                 return ''
                             }
@@ -90,7 +89,15 @@
                         }
 
                     },
-                ]
+                ],
+                drawCallback: function() {
+                    lozad('.lozad', {
+                        load: function(el) {
+                            el.src = el.dataset.src;
+                            el.onload = function() {}
+                        }
+                    }).observe()
+                }
             });
 
             // Add MenuItem AJAX Call Starts here
@@ -244,7 +251,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="storelocation" class="form-label">Item Price</label>
-                            <input type="text" class="form-control" name="mitem-price" required>
+                            <input type="number" step='0.01' value='0.00' placeholder='0.00' class="form-control" name="mitem-price" required>
                         </div>
                         <div class="col-12">
                             <div class="form-check form-switch">
@@ -281,7 +288,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="storelocation" class="form-label">Item Price</label>
-                            <input type="text" class="form-control" id="form-edit-item-price" required>
+                            <input type="number" step='0.01' value='0.00' placeholder='0.00' class="form-control" id="form-edit-item-price" required>
                         </div>
                         <div class="col-12">
                             <div class="form-check form-switch">

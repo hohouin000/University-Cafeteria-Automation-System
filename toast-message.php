@@ -90,5 +90,49 @@
                 </div>
             </div>
             <!-- End of Login Failed Toast Message -->
+
+            <!-- ATC Failed Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="atc-fail-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to Add to Cart !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of ATC Failed Toast Message -->
+
+            <!-- ATC Success Toast Message -->
+            <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="atc-success-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Add to Cart Successfully !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- End of ATC Success Toast Message -->
+
+            <!-- Update Cart Success Toast Message -->
+            <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="uc-success-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Cart Updated Successfully !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- End of Update Cart Success Toast Message -->
+
+            <!-- Update Cart Failed Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="uc-fail-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to Update to Cart !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Update Cart Failed Toast Message -->
         </div>
     </div>
