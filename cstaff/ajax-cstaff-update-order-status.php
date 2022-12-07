@@ -14,8 +14,16 @@ if ($odr_status == "CMPLT") {
 } else {
     $odr_compltime = NULL;
 }
-$query = "UPDATE odr SET odr_status = '{$odr_status}', odr_compltime ='{$odr_compltime}' WHERE odr_id = {$odr_id} AND store_id = {$store_id}";
+
+if ($odr_status == "CXLD") {
+    $odr_cxldime = date("Y-m-d\TH:i:s");
+} else {
+    $odr_cxldime = NULL;
+}
+
+$query = "UPDATE odr SET odr_status = '{$odr_status}', odr_compltime ='{$odr_compltime}', odr_cxldtime ='{$odr_cxldime}' WHERE odr_id = {$odr_id} AND store_id = {$store_id}";
 $result = $mysqli->query($query);
+
 if ($result) {
     $response['server_status'] = 1;
 } else {

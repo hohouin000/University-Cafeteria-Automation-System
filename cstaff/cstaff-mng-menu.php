@@ -26,7 +26,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <div class="container pt-2">
         <div class="table-responsive">

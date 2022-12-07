@@ -113,7 +113,7 @@
                             <tr>
                                 <th>Order Reference</th>
                                 <th>Customer Name</th>
-                                <th>Order Placement Time</th>
+                                <th>Order Cancelled Time</th>
                                 <th>Total Price</th>
                                 <th>Order Details</th>
                             </tr>
@@ -128,6 +128,9 @@
 
     <script>
         $(document).ready(function() {
+            //Get Real Time Data, Refresh Table every n millisecond(s)
+            setInterval(function () {  $.fn.reloadTable()}, 10000); 
+
             $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust()
@@ -167,7 +170,7 @@
                         data: 'odr_id',
                         render: function(data, type, row) {
                             if (data != '') {
-                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success btn-sm  btn-received " data-id="' + data + '"> Mark as Paid </a><a class="btn btn-outline-danger btn-sm btn-cancel" data-id="' + data + '"> Cancel </a></div>'
+                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success me-1 my-1 btn-sm  btn-received " data-id="' + data + '"> Mark as Paid </a><a class="btn btn-outline-danger me-1 my-1 btn-sm btn-cancel" data-id="' + data + '"> Cancel </a></div>'
                             } else {
                                 return ''
                             }
@@ -203,7 +206,7 @@
                         data: 'odr_id',
                         render: function(data, type, row) {
                             if (data != '') {
-                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success me-1 my-1 btn-sm  btn-prepared " data-id="' + data + '"> Mark as Prepared </a></div>'
+                                return '<div class="d-grid gap-2 d-md-block"> <a class="btn btn-outline-success me-1 my-1 btn-sm  btn-prepared " data-id="' + data + '"> Mark as Prepared </a> <a href="cstaff-generate-receipt.php?odr_id=' + data + '" target="_blank" class="btn btn-outline-secondary me-1 my-1 btn-sm  btn-generate-receipt" style="font-size:smaller;"> Generate Receipt </a></div>'
                             } else {
                                 return ''
                             }
@@ -276,13 +279,12 @@
                         data: 'odr_id',
                         render: function(data, type, row) {
                             if (data != '') {
-                                return '<div class="d-grid gap-2 d-md-block"> <a href="cstaff-generate-receipt.php?odr_id=' + data + '" target="_blank" class="btn btn-outline-success me-1 my-1 btn-sm  btn-generate-receipt" style="font-size:smaller;"> Generate Receipt </a>'
+                                return '<div class="d-grid gap-2 d-md-block"><a href="cstaff-generate-receipt.php?odr_id=' + data + '" target="_blank" class="btn btn-outline-secondary me-1 my-1 btn-sm  btn-generate-receipt" style="font-size:smaller;"> Generate Receipt </a></div>'
                             } else {
                                 return ''
                             }
                         }
-
-                    },
+                    }
                 ],
                 scrollY: 200,
                 scrollCollapse: true,
@@ -299,7 +301,7 @@
                         data: 'user_name',
                     },
                     {
-                        data: 'odr_placedtime'
+                        data: 'odr_cxldtime'
                     },
                     {
                         data: 'total_price'

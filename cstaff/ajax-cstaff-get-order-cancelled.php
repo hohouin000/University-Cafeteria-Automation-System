@@ -19,7 +19,7 @@ if ($rowcount > 0) {
         $user_arr = $mysqli->query($user_query)->fetch_array();
         $user_name = $user_arr['user_fname'] . " " . $user_arr['user_lname'];
 
-        $odr_placedtime = (new Datetime($row["odr_placedtime"]))->format("F j, Y H:i");
+        $odr_cxldtime = (new Datetime($row["odr_cxldtime"]))->format("F j, Y H:i");
 
         $odr_query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$row['odr_id']}";
         $odr_arr = $mysqli->query($odr_query)->fetch_array();
@@ -38,7 +38,7 @@ if ($rowcount > 0) {
         $data[] = [
             "odr_id" => $row['odr_id'],
             "odr_ref" => $row['odr_ref'],
-            "odr_placedtime" => $odr_placedtime,
+            "odr_cxldtime" => $odr_cxldtime,
             "user_name" => $user_name,
             "total_price" => $total_price,
             "odr_details" => $details,
@@ -48,7 +48,7 @@ if ($rowcount > 0) {
     $data[] = [
         "odr_id" => '',
         "odr_ref" => '',
-        "odr_placedtime" => '',
+        "odr_cxldtime" => '',
         "user_name" => '',
         "total_price" => '',
         "odr_details" => '',

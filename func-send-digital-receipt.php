@@ -1,6 +1,7 @@
 
 <?php
 require 'vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -18,7 +19,11 @@ if (isset($_GET["response"])) {
         $odr_detail_query = "SELECT m.*,od.* FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id}";
         $odr_detail_result = $mysqli->query($odr_detail_query);
         while ($odr_detail_row = $odr_detail_result->fetch_array()) {
-            $mitem = $odr_detail_row['mitem_name'] . " " . "x" . $odr_detail_row['odr_detail_amount'];
+            if ($odr_detail_row["odr_detail_remark"] != "") {
+                $mitem = $odr_detail_row["odr_detail_amount"] . "<b>x</b> " . $odr_detail_row["mitem_name"] . " (" . $odr_detail_row["odr_detail_remark"] . ")";
+            } else {
+                $mitem = $odr_detail_row["odr_detail_amount"]  . "<b>x</b> " . $odr_detail_row["mitem_name"];
+            }
             $price = "RM " . $odr_detail_row['mitem_price'] * $odr_detail_row['odr_detail_amount'];
             $details .=
                 "<tr><td>$mitem</td><td class='alignright'>$price</td></tr>";
@@ -298,7 +303,7 @@ if (isset($_GET["response"])) {
                                                         <table class='invoice'>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>Store: $store_name<br>Digital Receipt-Order Ref: $odr_ref<br>$date</td>
+                                                                    <td>Store: $store_name<br>Order Ref: $odr_ref<br>Date: $date</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -306,7 +311,7 @@ if (isset($_GET["response"])) {
                                                                             <tbody>
                                                                                 $details
                                                                                 <tr class='total'>
-                                                                                    <td class='alignright' width='80%'>Total</td>
+                                                                                    <td class='alignright' width='80%'>Total:</td>
                                                                                     <td class='alignright'>$total_price</td>
                                                                                 </tr>
                                                                             </tbody>
@@ -341,7 +346,7 @@ if (isset($_GET["response"])) {
         $mail->Port = "587";
         $mail->Username = "ucastest000@gmail.com";
         $mail->Password = "qzegadfeopjlktvs";
-        $mail->Subject = "Digital Receipt";
+        $mail->Subject = "Digital Receipt: " . $odr_ref;
         $mail->setFrom('ucastest000@gmail.com');
         $mail->isHTML(true);
         $mail->Body = $page;

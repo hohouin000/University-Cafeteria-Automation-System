@@ -14,7 +14,7 @@
                 </li>
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] == "CUST") { ?>
                     <li class="nav-item">
-                        <a href="cstaff-mng-order.php" class="nav-link px-2 text-dark">Order History</a>
+                        <a href="order-history.php" class="nav-link px-2 text-dark">Order History</a>
                     </li>
                 <?php } ?>
             </ul>

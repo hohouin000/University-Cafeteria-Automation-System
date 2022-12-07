@@ -85,6 +85,60 @@
                 <div class="card border-info">
                     <div class="card-body">
                         <h6 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z" />
+                                <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
+                            </svg>
+                            Total Online Sales Revenue
+                        </h6>
+                        <p class="card-text my-2">
+                            <?php
+                            $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_online_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id
+                                WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND p.payment_type = 'ONLINE' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            $result = $mysqli->query($query);
+                            $row = $result->fetch_array();
+                            if ($row["total_online_sales_revenue"] != NULL) {
+                                echo "RM " . $row["total_online_sales_revenue"];
+                            } else {
+                                echo "RM 0.00";
+                            }
+                            ?>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-info">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-wallet-fill" viewBox="0 0 16 16">
+                                <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v2h6a.5.5 0 0 1 .5.5c0 .253.08.644.306.958.207.288.557.542 1.194.542.637 0 .987-.254 1.194-.542.226-.314.306-.705.306-.958a.5.5 0 0 1 .5-.5h6v-2A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                <path d="M16 6.5h-5.551a2.678 2.678 0 0 1-.443 1.042C9.613 8.088 8.963 8.5 8 8.5c-.963 0-1.613-.412-2.006-.958A2.679 2.679 0 0 1 5.551 6.5H0v6A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-6z" />
+                            </svg>
+                            Total Offline Sales Revenue
+                        </h6>
+                        <p class="card-text my-2">
+                            <?php
+                            $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_offline_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id
+                                WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND p.payment_type = 'PAC' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            $result = $mysqli->query($query);
+                            $row = $result->fetch_array();
+                            if ($row["total_offline_sales_revenue"] != NULL) {
+                                echo "RM " . $row["total_offline_sales_revenue"];
+                            } else {
+                                echo "RM 0.00";
+                            }
+                            ?>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-info">
+                    <div class="card-body">
+                        <h6 class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
                                 <path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z" />
                                 <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
@@ -185,7 +239,8 @@
             </div>
         </div>
         <br />
-        <h4 class="border-top fw-light pt-3 mt-2">Menu Performance <h6>(Based on successful completed orders)</h6></h4>
+        <h4 class="border-top fw-light pt-3 mt-2">Menu Performance <h6>(Based on successful completed orders)</h6>
+        </h4>
         <div id="div-mpMessage">
             <p class="fw-light">None</p>
         </div>

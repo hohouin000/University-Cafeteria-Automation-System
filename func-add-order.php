@@ -12,6 +12,7 @@ if (isset($_GET["response"])) {
         $total_amount = $sum_arr['total_price'];
         $payment_type = "ONLINE";
         $odr_status = "PREP";
+        $session_id = $_GET["session_id"];
     }
 } else {
     $total_amount = $_POST["total-amount"];

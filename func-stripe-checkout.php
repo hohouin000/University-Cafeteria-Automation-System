@@ -10,6 +10,7 @@ header('Content-Type', 'application/json');
 $store_query = "SELECT * FROM store WHERE store_id = (SELECT store_id FROM cart WHERE user_id = {$_SESSION['user_id']} GROUP BY user_id)";
 $store_arr = $mysqli->query($store_query)->fetch_array();
 $store_id = $store_arr["store_id"];
+$store_name = $store_arr["store_name"];
 
 $query = "SELECT c.*, m.*, u.* FROM user u INNER JOIN cart c ON u.user_id = c.user_id INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']} AND c.store_id = {$store_id};";
 $result = $mysqli->query($query);
@@ -34,15 +35,24 @@ while ($row = $result->fetch_object()) {
     );
 }
 
+try {
+    $session = $stripe->checkout->sessions->create([
+        "success_url" => ADD_URL . '?response=1',
+        "cancel_url" => FAILED_URL,
+        "payment_method_types" => ['card'],
+        "mode" => 'payment',
+        "line_items" => $line_items_array,
+        "payment_intent_data" => [
+            "description" => "Store Name: " . $store_name,
+        ],
 
-print_r($line_items_array);
+    ]);
 
+    header("Location: " . $session->url);
+} catch (Exception $e) {
+    $api_error = $e->getMessage();
+}
 
-$session = $stripe->checkout->sessions->create([
-    "success_url" => ADD_URL . '?response=1',
-    "cancel_url" => FAILED_URL,
-    "payment_method_types" => ['card', 'grabpay'],
-    "mode" => 'payment',
-    "line_items" => $line_items_array
-]);
-header("Location: " . $session->url);
+if (($api_error) && !$session) {
+    header("location: order-failed.php?response=0");
+}
