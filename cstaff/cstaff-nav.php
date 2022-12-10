@@ -18,6 +18,9 @@
                     <a href="cstaff-report-generation.php" class="nav-link px-2 text-dark">Report Generation</a>
                 </li>
                 <li class="nav-item">
+                    <a href="cstaff-view-store-rating.php" class="nav-link px-2 text-dark">View Store Rating</a>
+                </li>
+                <li class="nav-item">
                     <a href="cstaff-store-settings.php" class="nav-link px-2 text-dark">Store Settings</a>
                 </li>
             </ul>

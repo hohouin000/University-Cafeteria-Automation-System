@@ -45,6 +45,7 @@
     </div>
 
     <?php include('../footer.php'); ?>
+    <?php include("../toast-message.php"); ?>
 
     <script>
         $(document).ready(function() {
@@ -303,8 +304,6 @@
         </div>
     </div>
     <!-- End of Edit Modal -->
-
-    <?php include("../toast-message.php"); ?>
 </body>
 
 </html>

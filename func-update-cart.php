@@ -6,25 +6,41 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] != "CUST")) {
     exit(1);
 }
 
-if (isset($_POST["mitem-id"]) && isset($_POST["store-id"])) {
-    $mitem_id = $_POST["mitem-id"];
-    $store_id = $_POST["store-id"];
-    $user_id = $_SESSION["user_id"];
-    $query = "SELECT * from cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
-    $result = $mysqli->query($query);
-    $rowcount = mysqli_num_rows($result);
-    if ($rowcount > 0) {
+if (isset($_POST["mitem-id"], $_POST["store-id"], $_POST["amount"])) {
+    if (!empty($_POST['mitem-id']) && !empty($_POST['store-id']) && !empty($_POST['amount'])) {
+        $mitem_id = mysqli_real_escape_string($mysqli, $_POST["mitem-id"]);
+        $store_id = mysqli_real_escape_string($mysqli, $_POST["store-id"]);
+        $user_id = mysqli_real_escape_string($mysqli, $_SESSION["user_id"]);
 
-        $amount = $_POST["amount"];
-        $remark = $_POST["remark"];
+        $mitem_id = htmlspecialchars($mitem_id);
+        $store_id = htmlspecialchars($store_id);
+        $user_id = htmlspecialchars($user_id);
 
-        $query = "UPDATE cart set cart_amount = {$amount}, cart_remark = '{$remark}' WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
-
+        $query = "SELECT * from cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
         $result = $mysqli->query($query);
+        $rowcount = mysqli_num_rows($result);
+        if ($rowcount > 0) {
+            $amount = mysqli_real_escape_string($mysqli, $_POST["amount"]);
+            $remark = mysqli_real_escape_string($mysqli, $_POST["remark"]);
 
-        if ($result) {
-            header("location:cart.php?response=1");
-            exit(1);
+            $remark = htmlspecialchars($remark);
+
+            if (!filter_var($amount, FILTER_VALIDATE_FLOAT)) {
+                header("location:cart.php?response=0");
+                exit(1);
+            }
+
+            $query = "UPDATE cart set cart_amount = {$amount}, cart_remark = '{$remark}' WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
+
+            $result = $mysqli->query($query);
+
+            if ($result) {
+                header("location:cart.php?response=1");
+                exit(0);
+            } else {
+                header("location:cart.php?response=0");
+                exit(1);
+            }
         } else {
             header("location:cart.php?response=0");
             exit(1);
@@ -33,4 +49,7 @@ if (isset($_POST["mitem-id"]) && isset($_POST["store-id"])) {
         header("location:cart.php?response=0");
         exit(1);
     }
+} else {
+    header("location:cart.php?response=0");
+    exit(1);
 }

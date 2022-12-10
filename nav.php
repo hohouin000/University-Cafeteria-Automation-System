@@ -22,7 +22,7 @@
                 <?php if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] != "CUST")) { ?>
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="mx-2 mt-1 mt-md-0 btn btn-outline-success" href="register.php">Register/Sign Up</a>
+                            <a class="mx-2 mt-1 mt-md-0 btn btn-outline-success" href="signup.php">Register/Sign Up</a>
                         </li>
                         <li class="nav-item">
                             <a class="mx-2 mt-1 mt-md-0 btn btn-outline-login" href="login.php">Login</a>

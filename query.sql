@@ -11,3 +11,7 @@ SELECT  m.mitem_name, SUM(od.odr_detail_amount) as total FROM odr o INNER JOIN o
 SELECT EXTRACT(HOUR from o.odr_placedtime) as hr, count(*) as cnt FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = 35 AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('2020/6/21') AND DATE('2022/11/3')) GROUP BY EXTRACT(HOUR from o.odr_placedtime) ORDER BY count(*) DESC LIMIT 1;
 
 SELECT m.mitem_name, SUM(od.odr_detail_amount) AS total_amount, SUM(od.odr_detail_amount*od.odr_detail_price) AS sub_total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY mitem_name ORDER BY total_amount, sub_total DESC;
+
+SELECT CAST(AVG(r.rating_value) AS DECIMAL(10,1)) as 'rating', o.user_id, s.store_id FROM odr o INNER JOIN rating r ON o.rating_id = r.rating_id INNER JOIN store s ON o.store_id = s.store_id INNER JOIN user u ON o.user_id = u.user_id GROUP BY o.user_id;
+
+SELECT CAST(AVG(r.rating_value) AS DECIMAL(10,1)) as 'rating' FROM odr o INNER JOIN rating r ON o.rating_id = r.rating_id WHERE o.store_id = 35;

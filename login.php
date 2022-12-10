@@ -25,11 +25,11 @@
               <form id="form-login">
                 <div class="mb-4">
                   <label for="username" class="form-label">Username</label>
-                  <input type="text" class="form-control" id="form-login-username" />
+                  <input type="text" class="form-control" id="username" required/>
                 </div>
                 <div class="mb-4">
                   <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="form-login-pwd" />
+                  <input type="password" class="form-control" id="password" required/>
                 </div>
                 <div class="d-grid">
                   <button type="submit" class="btn btn-outline-primary">Login</button>
@@ -51,8 +51,8 @@
     $(document).ready(function() {
       $("#form-login").on('submit', function(e) {
         e.preventDefault();
-        var user_username = $('#form-login-username').val()
-        var user_pwd = $('#form-login-pwd').val()
+        var user_username = $('#username').val()
+        var user_pwd = $('#password').val()
         $.ajax({
           url: "ajax-login-validation.php",
           type: "POST",

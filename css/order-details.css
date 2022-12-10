@@ -1,3 +1,15 @@
+.align-items-center {
+  font-size: 1vw;
+}
+
+.align-items-start {
+  font-size:1vw;
+}
+
+.align-items-end {
+  font-size: 1vw;
+}
+
 .track-line {
   height: 2px !important;
   background-color: #488978;

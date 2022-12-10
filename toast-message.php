@@ -134,5 +134,115 @@
                 </div>
             </div>
             <!-- END of Update Cart Failed Toast Message -->
+
+            <!-- Add Rating Failed Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="rating-fail-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to Add Rating !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Add Rating Failed Toast Message -->
+
+            <!-- Add Rating Success Toast Message -->
+            <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="rating-success-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Rating Added Successfully !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Add Rating Success Toast Message -->
+
+            <!-- Rating Exist Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="rating-exist-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Rating Exist !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Rating Exist Toast Message -->
+
+            <!-- Password Does Not Match Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="password-fail-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Password Does Not Match !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Password Does Not Match Toast Message -->
+
+            <!-- Signup Success Toast Message -->
+            <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="signup-success-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        User Sign Up Successfully !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Signup Success Toast Message -->
+
+            <!-- Password Does Not Match Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="signup-fail-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to Sign Up !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Password Does Not Match Toast Message -->
+
+            <!-- Username Exist Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="user-exist-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Username Existed !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Username Exist Toast Message -->
+
+            <!-- Invalid Email Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="email-invalid-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Invalid Email !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Invalid Email Toast Message -->
+
+            <!-- Invalid Password Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="password-invalid-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Invalid Password !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Invalid Password Toast Message -->
+
+            <!-- Invalid Username Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="username-invalid-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Invalid Username !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Invalid Username Toast Message -->
         </div>
     </div>

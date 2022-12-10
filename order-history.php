@@ -10,7 +10,7 @@
         exit(1);
     }
     ?>
-    
+
     <title>Order History</title>
 </head>
 
@@ -149,7 +149,30 @@
         </div>
     </div>
 
-    <?php include('footer.php'); ?>
+    <?php
+    include('footer.php');
+    include('toast-message.php');
+    if (isset($_GET["response"])) {
+        $response = $_GET["response"];
+    } else {
+        $response = "N";
+    }
+    ?>
+
+    <script>
+        $(document).ready(function() {
+            if (<?php echo $response; ?> != "N") {
+                var response = "<?php echo $response; ?>";
+                if (response == 1) {
+                    $('#rating-success-toast').toast('show')
+                } else if (response == -1) {
+                    $('#rating-exist-toast').toast('show')
+                } else {
+                    $('#rating-fail-toast').toast('show')
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -72,17 +72,26 @@
                                                 case "CMPLT": ?>
                                                     <span class="lead fw-normal">Your order has been completed</span>
                                                     <span class="text-muted small">on <?php echo date("jS-M-Y H:ia", strtotime($arr['odr_compltime'])) ?></span>
-                                                    <div class="d-flex justify-content-between align-items-end">
-                                                        <button type="button" class="btn btn-outline-primary me-1 my-1 btn-sm">Rate Experience</button>
-                                                    </div>
-
-                                                <?php break;
+                                                    <?php if ($arr['odr_rate_status'] == 0) { ?>
+                                                        <div class="d-flex justify-content-between align-items-end">
+                                                            <a href="rate.php?odr_id=<?php echo $odr_id ?>" class="btn btn-outline-primary me-1 my-1 btn-sm">Rate Experience</a>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <span class="text-muted small"> <b>Order has been rated</b>
+                                                        </span>
+                                                    <?php }
+                                                    break;
                                                 case "CXLD": ?>
                                                     <span class="lead fw-normal">Your order has been cancelled</span>
                                                     <span class="text-muted small">on <?php echo date("jS-M-Y H:ia", strtotime($arr['odr_cxldtime'])) ?></span>
                                                 <?php break;
                                                 case NULL: ?>
                                                     <span class="lead fw-normal">Invalid Order</span>
+                                                <?php
+                                                    break;
+                                                case "RDFK":
+                                                ?>
+                                                    <span class="lead fw-normal">Your order is ready for pickup</span>
                                                 <?php
                                                     break;
                                                 default:
@@ -210,8 +219,6 @@
             ?>
         </section>
     </div>
-
-
     <?php include('footer.php'); ?>
 </body>
 

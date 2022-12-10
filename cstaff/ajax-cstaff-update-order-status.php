@@ -7,26 +7,42 @@ if ($_SESSION["user_role"] != "CSTAFF") {
 if (isset($_SESSION["store_id"])) {
     $store_id = $_SESSION["store_id"];
 }
-$odr_id = $_POST['odr_id'];
-$odr_status = $_POST['odr_status'];
-if ($odr_status == "CMPLT") {
-    $odr_compltime = date("Y-m-d\TH:i:s");
-} else {
-    $odr_compltime = NULL;
-}
+if (isset($_POST["odr_id"], $_POST['odr_status'])) {
+    if (!empty($_POST['odr_id']) && !empty($_POST['odr_status'])) {
+        $odr_id = mysqli_real_escape_string($mysqli, $_POST['odr_id']);
+        $odr_status = mysqli_real_escape_string($mysqli, $_POST['odr_status']);
 
-if ($odr_status == "CXLD") {
-    $odr_cxldime = date("Y-m-d\TH:i:s");
-} else {
-    $odr_cxldime = NULL;
-}
+        $odr_status = htmlspecialchars($odr_status);
 
-$query = "UPDATE odr SET odr_status = '{$odr_status}', odr_compltime ='{$odr_compltime}', odr_cxldtime ='{$odr_cxldime}' WHERE odr_id = {$odr_id} AND store_id = {$store_id}";
-$result = $mysqli->query($query);
+        if ($odr_status == "CMPLT") {
+            $odr_compltime = date("Y-m-d\TH:i:s");
+        } else {
+            $odr_compltime = null;
+        }
 
-if ($result) {
-    $response['server_status'] = 1;
+        if ($odr_status == "CXLD") {
+            $odr_cxldime = date("Y-m-d\TH:i:s");
+        } else {
+            $odr_cxldime = null;
+        }
+
+        $query = "UPDATE odr SET odr_status = '{$odr_status}', odr_compltime ='{$odr_compltime}', odr_cxldtime ='{$odr_cxldime}' WHERE odr_id = {$odr_id} AND store_id = {$store_id}";
+        $result = $mysqli->query($query);
+
+        if ($result) {
+            $response['server_status'] = 1;
+        } else {
+            $response['server_status'] = 0;
+        }
+        echo json_encode($response);
+        exit(0);
+    } else {
+        $response['server_status'] = 0;
+        echo json_encode($response);
+        exit(1);
+    }
 } else {
     $response['server_status'] = 0;
+    echo json_encode($response);
+    exit(1);
 }
-echo json_encode($response);
