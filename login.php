@@ -10,7 +10,7 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-  <div class="container p-5" id="login-dashboard" style="margin-top:5%; margin-bottom:12%;">
+  <div class="container p-5" id="login-dashboard" style="margin-top:5%;">
     <a class="nav nav-item text-decoration-none text-muted" href="index.php">
       <i class="bi bi-arrow-left-square me-2"></i>Go back</a>
     <!-- Login Form -->

@@ -28,6 +28,27 @@
             <a class="nav nav-item text-decoration-none text-muted" href="store-list.php">
                 <i class="fa-solid fa-caret-left"> Go back</i></a>
         </div>
+        <?php
+        if (isset($_SESSION['server_status'])) {
+            if ($_SESSION['server_status'] == 1) {
+        ?>
+                <div class="alert alert-success alert-dismissible fade show mt-3 mb-3" role="alert">
+                    Add to Cart Successfully !
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php
+                unset($_SESSION['server_status']);
+            } else {
+            ?>
+                <div class="alert alert-warning alert-dismissible fade show mt-3 mb-3" role="alert">
+                    Failed to Add to Cart !
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        <?php
+                unset($_SESSION['server_status']);
+            }
+        }
+        ?>
         <h2 class="border-bottom pb-2"> <?php echo $row['store_name'] ?></h2>
         <p class="card-text my-2">
             <span class="h6">
@@ -76,14 +97,30 @@
                                 </div>
                             </div>
                         </div>
-                <?php
+                    <?php
                     }
+                } else {
+                    ?>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </symbol>
+                    </svg>
+                    <div class="alert alert-warning d-flex align-items-center w-100" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:" width="24" height="24">
+                            <use xlink:href="#exclamation-triangle-fill" />
+                        </svg>
+                        <div>
+                            Best seller menu items are currently not available for this store.
+                        </div>
+                    </div>
+                <?php
                 }
                 ?>
             </div>
         </div>
 
-        <div class="container p-5" id="menu-dashboard" style="margin-top:3px; margin-bottom:12%;">
+        <div class="container p-5" id="menu-dashboard" style="margin-top:2px; margin-bottom:5px;">
             <h3 class="border-bottom pb-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-menu-app" viewBox="0 0 16 16">
                     <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h2A1.5 1.5 0 0 1 5 1.5v2A1.5 1.5 0 0 1 3.5 5h-2A1.5 1.5 0 0 1 0 3.5v-2zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-2zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
                 </svg> Available Menu Items</h3>
@@ -119,8 +156,24 @@
                                 </div>
                             </div>
                         </div>
-                <?php
+                    <?php
                     }
+                } else {
+                    ?>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </symbol>
+                    </svg>
+                    <div class="alert alert-warning d-flex align-items-center w-100" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:" width="24" height="24">
+                            <use xlink:href="#exclamation-triangle-fill" />
+                        </svg>
+                        <div>
+                            No menu items are available for this store yet.
+                        </div>
+                    </div>
+                <?php
                 }
                 ?>
             </div>
@@ -128,21 +181,6 @@
     </div>
     <?php include('footer.php'); ?>
     <?php include("toast-message.php"); ?>
-    <?php
-    if (isset($_GET["response"])) {
-        $response = $_GET["response"];
-    }
-    ?>
-    <script>
-        $(document).ready(function() {
-            var response = "<?php echo $response; ?>";
-            if (response == 1) {
-                $('#atc-success-toast').toast('show')
-            } else {
-                $('#atc-fail-toast').toast('show')
-            }
-        });
-    </script>
 </body>
 
 </html>

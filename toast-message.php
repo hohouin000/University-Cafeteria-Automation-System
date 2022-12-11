@@ -161,7 +161,7 @@
             <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="rating-exist-toast">
                 <div class="d-flex">
                     <div class="toast-body">
-                        Rating Exist !
+                        Rating Existed !
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
@@ -244,5 +244,27 @@
                 </div>
             </div>
             <!-- END of Invalid Username Toast Message -->
+
+            <!-- Password Not Found Toast Message -->
+            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="password-notfound-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Password Not Found !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Password Not Found  Toast Message -->
+
+             <!-- Invalid Store Hour Toast Message -->
+             <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="hour-invalid-toast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                    Open Hour Cannot Be Larger Than Close Hour !
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <!-- END of Invalid Store Hour Toast Message -->
         </div>
     </div>

@@ -1,6 +1,6 @@
+<!-- Template from https://codepen.io/mersacs/pen/qMwPzw -->
 <!DOCTYPE html>
 <html lang="en">
-<!-- https://codepen.io/mersacs/pen/qMwPzw -->
 <head>
     <?php
     session_start();

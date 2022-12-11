@@ -41,22 +41,27 @@ if (isset($_POST["odr-id"]) && isset($_POST["rating"]) && isset($_POST["comment"
                 $result = $mysqli->query($query);
 
                 if ($result) {
-                    header("location:order-history.php?response=1");
+                    $_SESSION["server_status"] = 1;
+                    header("location:order-history.php");
                     exit(0);
                 } else {
-                    header("location:order-history.php?response=0");
+                    $_SESSION["server_status"] = 0;
+                    header("location:order-history.php");
                     exit(1);
                 }
             } else {
-                header("location:order-history.php?response=-1");
+                $_SESSION["server_status"] = -1;
+                header("location:order-history.php");
                 exit(1);
             }
         }
     } else {
-        header("location:order-history.php?response=0");
+        $_SESSION["server_status"] = 0;
+        header("location:order-history.php");
         exit(1);
     }
 } else {
-    header("location:order-history.php?response=0");
+    $_SESSION["server_status"] = 0;
+    header("location:order-history.php");
     exit(1);
 }

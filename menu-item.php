@@ -26,7 +26,7 @@
     $result = $mysqli->query($query);
     $row = $result->fetch_array();
     ?>
-    <div class="container p-5" id="menuitem-dashboard" style="margin-top:5%; margin-bottom:12%;">
+    <div class="container p-5" id="menuitem-dashboard" style="margin-top:5%;">
         <div class="row my-3">
             <a class="nav nav-item text-decoration-none text-muted mb-2" onclick="history.back();">
                 <i class="fa-solid fa-caret-left"> Go back</i></a>
@@ -35,7 +35,7 @@
             <div class="col mb-3 mb-md-0">
                 <img <?php
                         echo "src=\"img/menu/{$row['mitem_pic']}\"";
-                        ?> class="img-fluid rounded-25 float-start" alt="<?php echo $row["mitem_name"] ?>">
+                        ?> class="img-fluid rounded-25 float-start" style="width:300%; height:450px;" alt="<?php echo $row["mitem_name"] ?>">
             </div>
             <div class="col text-wrap">
                 <h1 class="fw-light"><?php echo $row["mitem_name"] ?></h1>

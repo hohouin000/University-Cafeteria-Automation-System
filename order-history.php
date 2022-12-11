@@ -19,6 +19,32 @@
     <div class="container px-5 py-4">
         <div class="container p-2 pb-0 mt-5 pt-3">
             <h2 class="pt-3 display-6">Order History</h2>
+            <?php
+            if (isset($_SESSION['server_status'])) {
+                if ($_SESSION['server_status'] == 1) {
+            ?>
+                    <div class="alert alert-success alert-dismissible fade show mt-3 mb-0" role="alert">
+                        Rating Added Successfully !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php unset($_SESSION['server_status']);
+                } else if ($_SESSION['server_status'] == -1) {
+                ?>
+                    <div class="alert alert-warning alert-dismissible fade show mt-3 mb-0" role="alert">
+                        Rating Existed !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php unset($_SESSION['server_status']);
+                } else {
+                ?>
+                    <div class="alert alert-warning alert-dismissible fade show mt-3 mb-0" role="alert">
+                        Failed to Add Rating !
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <?php unset($_SESSION['server_status']);
+                }
+            }
+            ?>
             <nav class="mt-5">
                 <div class="nav nav-pills flex-wrap mb-3" id="pills-tab" role="tablist">
                     <button class="nav-link active px-4" id="ongoing-tab" data-bs-toggle="tab" data-bs-target="#nav-ongoing" type="button" role="tab" aria-controls="nav-ongoing" aria-selected="true">Ongoing</button>
@@ -152,27 +178,7 @@
     <?php
     include('footer.php');
     include('toast-message.php');
-    if (isset($_GET["response"])) {
-        $response = $_GET["response"];
-    } else {
-        $response = "N";
-    }
     ?>
-
-    <script>
-        $(document).ready(function() {
-            if (<?php echo $response; ?> != "N") {
-                var response = "<?php echo $response; ?>";
-                if (response == 1) {
-                    $('#rating-success-toast').toast('show')
-                } else if (response == -1) {
-                    $('#rating-exist-toast').toast('show')
-                } else {
-                    $('#rating-fail-toast').toast('show')
-                }
-            }
-        });
-    </script>
 </body>
 
 </html>

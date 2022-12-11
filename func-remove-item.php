@@ -20,18 +20,22 @@ if (isset($_POST["mitem-id"]) && isset($_POST["store-id"])) {
             $result = $mysqli->query($query);
 
             if ($result) {
-                header("location:cart.php?response=1");
+                $_SESSION["server_status"] = 1;
+                header("location:cart.php");
                 exit(0);
             } else {
-                header("location:cart.php?response=0");
+                $_SESSION["server_status"] = 0;
+                header("location:cart.php");
                 exit(1);
             }
         } else {
-            header("location:cart.php?response=0");
+            $_SESSION["server_status"] = 0;
+            header("location:cart.php");
             exit(1);
         }
     } else {
-        header("location:cart.php?response=0");
+        $_SESSION["server_status"] = 0;
+        header("location:cart.php");
         exit(1);
     }
 }

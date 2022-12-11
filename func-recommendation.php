@@ -64,8 +64,6 @@ function func_recommendation($matrix, $target_user)
             // var_dump($data);
             $ranking_arr[$key] = $data / $sim_sums_arr[$key];
         }
-        // set highest ranking at the top
-        //array_multisort($ranking_arr, SORT_DESC);
         return $ranking_arr;
     }
 }

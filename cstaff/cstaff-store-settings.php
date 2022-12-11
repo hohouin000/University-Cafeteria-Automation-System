@@ -29,7 +29,7 @@
         <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-3" id="div-setting">
             <div class="col">
                 <div class="card border-info p-2">
-                    <div class="card-body">
+                    <div class="card-body" id="store-hour-card">
                         <h4 class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
                                 <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
@@ -56,7 +56,7 @@
 
             <div class="col">
                 <div class="card border-success p-2">
-                    <div class="card-body">
+                    <div class="card-body" id="store-status-card">
                         <h4 class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
                                 <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
@@ -148,7 +148,8 @@
                 var store_status;
 
                 if (store_openhour > store_closehour) {
-                    alertify.error('Open hour cannot be larger than close hour !');
+                    //alertify.error('Open hour cannot be larger than close hour !');
+                    $('#hour-invalid-toast').toast('show')
                     return false;
                 }
 
@@ -171,13 +172,19 @@
                     dataType: 'json',
                     success: function(response) {
                         if (response.server_status == 1) {
-                            alertify.success('Changes Made Successfully !');
+                            $('#btn-modal-close-store-setting').click();
+                            $("#store-hour-card").load(" #store-hour-card");
+                            $("#store-status-card").load(" #store-status-card");
+                            $('#edit-success-toast').toast('show')
+                            // alertify.success('Changes Made Successfully !');
                             // alertify.alert('Success', 'Changes Made Successfully !', function() {
                             //     location.reload();
                             // });
-                            setTimeout(location.reload.bind(location), 700);
+                            // setTimeout(location.reload.bind(location), 700);
                         } else {
-                            alertify.error('Fail to change settings !');
+                            //alertify.error('Fail to change settings !');
+                            $('#btn-modal-close-store-setting').click();
+                            $('#edit-fail-toast').toast('show')
                         }
                     }
                 })

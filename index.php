@@ -13,7 +13,7 @@
     <?php include('nav.php');
     include('func-recommendation.php');
     ?>
-    <div class="container p-5" id="recommend-dashboard" style="margin-top:5%; margin-bottom:12%;">
+    <div class="container p-5" id="recommend-dashboard" style="margin-top:5%;">
         <h3 class="border-bottom pb-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
                 <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
             </svg> Recommended Stores </h3>
@@ -34,7 +34,7 @@
                     $i = 0;
                     $recommendation = array();
                     $recommendation = func_recommendation($matrix, $_SESSION['user_id']);
-                    var_dump($recommendation);
+                    arsort($recommendation);
                     if (!empty($recommendation)) {
                         foreach ($recommendation as $store_id => $rating) {
                             if ($i <= 5) {
@@ -125,8 +125,24 @@
                                         </div>
                                     </div>
                                 </div>
-                        <?php
+                            <?php
                             }
+                        } else {
+                            ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                                <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                                </symbol>
+                            </svg>
+                            <div class="alert alert-warning d-flex align-items-center w-100" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:" width="24" height="24">
+                                    <use xlink:href="#exclamation-triangle-fill" />
+                                </svg>
+                                <div>
+                                    No recommended stores are available currently.
+                                </div>
+                            </div>
+                        <?php
                         }
                     }
                 }
@@ -174,9 +190,24 @@
                                 </div>
                             </div>
                         </div>
-            <?php
+                    <?php
                     }
-                }
+                } else {
+                    ?>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </symbol>
+                    </svg>
+                    <div class="alert alert-warning d-flex align-items-center w-100" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:" width="24" height="24">
+                            <use xlink:href="#exclamation-triangle-fill" />
+                        </svg>
+                        <div>
+                            No recommended stores are available currently.
+                        </div>
+                    </div>
+            <?php }
             }
             ?>
         </div>

@@ -56,11 +56,11 @@ if (isset($_POST['total-amount'])) {
         }
 
         if (($api_error) && !$session) {
-            header("location: order-failed.php?response=0");
+            header("location: order-failed.php");
             exit(1);
         }
     } else {
-        header("location: order-failed.php?response=0");
+        header("location: order-failed.php");
         exit(1);
     }
 }

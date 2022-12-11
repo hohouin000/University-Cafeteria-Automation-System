@@ -43,7 +43,7 @@
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="text" id="username" name="username" class="form-control" minlegth="5" maxlength="15" required />
+                        <input type="text" id="username" name="username" class="form-control" pattern="(.){5,15}" title="Username must be minimum 5 characters length and maximum 15 characters length." required />
                         <label class="form-label" for="username">Username</label>
                       </div>
 
@@ -55,12 +55,12 @@
 
 
                       <div class="form-outline mb-4">
-                        <input type="password" id="password" name="password" class="form-control" minlength="8" maxlength="12" required />
+                        <input type="password" id="password" name="password" class="form-control" pattern="(.){8,12}" title="Password must be minimum 8 characters length and maximum 12 characters length." required />
                         <label class="form-label" for="password">Password</label>
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="password" id="confirm_password" class="form-control" minlength="8" maxlength="12" required />
+                        <input type="password" id="confirm_password" class="form-control" pattern="(.){8,12}" title="Password must be minimum 8 characters length and maximum 12 characters length." required />
                         <label class="form-label" for="confirm_password">Confirm Password</label>
                       </div>
 

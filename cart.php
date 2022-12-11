@@ -19,7 +19,28 @@
     <?php
     include('nav.php');
     ?>
-    <div class="container p-5" id="menu-dashboard" style="margin-top:8%;">
+    <div class="container p-5" id="menu-dashboard" style="margin-top:3%;">
+        <?php
+        if (isset($_SESSION['server_status'])) {
+            if ($_SESSION['server_status'] == 1) {
+        ?>
+                <div class="alert alert-success alert-dismissible fade show mt-3 mb-3" role="alert">
+                    Cart Updated Successfully !
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php
+                unset($_SESSION['server_status']);  
+            } else {
+            ?>
+                <div class="alert alert-warning alert-dismissible fade show mt-3 mb-3" role="alert">
+                    Failed to Update Cart !
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        <?php
+                unset($_SESSION['server_status']);
+            }
+        }
+        ?>
         <div class="row my-3">
             <a class="nav nav-item text-decoration-none text-muted" onclick="history.back()">
                 <i class="fa-solid fa-caret-left"> Go back</i></a>
@@ -64,7 +85,7 @@
                                             <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                                                 <!-- Image -->
                                                 <div class="img-fluid rounded">
-                                                    <img <?php echo "src=\"img/menu/{$row['mitem_pic']}\""; ?> class="w-100" alt="<?php echo $row["mitem_name"] ?>" />
+                                                    <img <?php echo "src=\"img/menu/{$row['mitem_pic']}\""; ?> class="w-100" style="width:100%; height:175px; object-fit:cover;" alt="<?php echo $row["mitem_name"] ?>" />
                                                 </div>
                                                 <!-- Image -->
                                             </div>
@@ -141,7 +162,7 @@
                                             <button type="submit" class="btn btn-primary btn-sm btn-block" title="btn-pay-counter" name="btn-pay-counter" id="btn-pay-counter">
                                                 Pay at counter
                                             </button>
-                                            <button type="submit" class="btn btn-info btn-sm btn-block" id="btn-pay-online"formaction="func-stripe-checkout.php">
+                                            <button type="submit" class="btn btn-info btn-sm btn-block" id="btn-pay-online" formaction="func-stripe-checkout.php">
                                                 Pay via Online Gateway
                                             </button>
                                             <input type="hidden" name="total-amount" value="<?php echo $sum_arr['total_price']; ?>">
@@ -230,25 +251,6 @@
     </div>
     <?php include('footer.php'); ?>
     <?php include("toast-message.php"); ?>
-    <?php
-    if (isset($_GET["response"])) {
-        $response = $_GET["response"];
-    } else {
-        $response = "N";
-    }
-    ?>
-    <script>
-        $(document).ready(function() {
-            if (<?php echo $response; ?> != "N") {
-                var response = "<?php echo $response; ?>";
-                if (response == 1) {
-                    $('#uc-success-toast').toast('show')
-                } else {
-                    $('#uc-fail-toast').toast('show')
-                }
-            }
-        });
-    </script>
 </body>
 
 </html>

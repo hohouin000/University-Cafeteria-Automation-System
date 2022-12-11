@@ -29,26 +29,47 @@
             <h2 class="pt-3 display-6">Order Details</h2>
             <div class="container pt-2 mt-5">
                 <?php
+                $total = 0;
                 $odr_id = $_GET["odr_id"];
-                $query = "SELECT m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id}";
+                $query = "SELECT odr_ref FROM odr WHERE odr_id = {$odr_id}";
+                $arr = $mysqli->query($query)->fetch_array();
+                $odr_ref = $arr['odr_ref'];
+
+                $query = "SELECT SUM(od.odr_detail_amount * od.odr_detail_price)as 'total', m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id} GROUP BY m.mitem_name";
                 $result = $mysqli->query($query);
                 $rowcount = mysqli_num_rows($result);
                 if ($rowcount > 0) {
-                    while ($row = $result->fetch_array()) {
                 ?>
-                        <p>
+                    <p>
+                        <b>Order Ref: <?php echo $odr_ref ?></b><br />
+                        <b>Order Summary</b><br />
+                        <?php
+                        while ($row = $result->fetch_array()) {
+                            $total = $row["total"];
+                        ?>
                             <?php echo $row["odr_detail_amount"] . "X " ?>
                             <?php
                             if ($row["odr_detail_remark"] != "") {
                                 echo $row["mitem_name"] . " (" . $row["odr_detail_remark"] . ") ";
+                            ?>
+                                <small class="text-muted">- RM <?php echo $row["odr_detail_price"] ?> each</small>
+                            <?php
                             } else {
                                 echo $row["mitem_name"] . " (No Remark)";
+                            ?>
+                                <small class="text-muted">- RM <?php echo $row["odr_detail_price"] ?> each</small>
+                            <?php
                             }
                             ?>
                             <br />
-                        </p>
+                        <?php
+                        }
+                        ?>
+                    </p>
+                    <?php
+                    ?>
+                    <p>Total: RM <?php echo $total ?></p>
                 <?php
-                    }
                 }
                 ?>
             </div>

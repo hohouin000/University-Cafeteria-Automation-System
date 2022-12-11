@@ -15,7 +15,8 @@ if (isset($_POST['mitem-id'], $_POST['store-id'], $_POST['amount'], $_POST['rema
         $remark = mysqli_real_escape_string($mysqli, $_POST["remark"]);
 
         if (!filter_var($amount, FILTER_VALIDATE_FLOAT)) {
-            header("location:store-menu.php?store_id={$store_id}&response=0");
+            $_SESSION["server_status"] = 0;
+            header("location:store-menu.php?store_id={$store_id}");
             exit(1);
         }
 
@@ -69,17 +70,21 @@ if (isset($_POST['mitem-id'], $_POST['store-id'], $_POST['amount'], $_POST['rema
             }
         }
         if ($added_result) {
-            header("location:store-menu.php?store_id={$store_id}&response=1");
+            $_SESSION["server_status"] = 1;
+            header("location:store-menu.php?store_id={$store_id}");
             exit(0);
         } else {
-            header("location:store-menu.php?store_id={$store_id}&response=0");
+            $_SESSION["server_status"] = 0;
+            header("location:store-menu.php?store_id={$store_id}");
             exit(1);
         }
     } else {
-        header("location:store-menu.php?store_id={$store_id}&response=0");
+        $_SESSION["server_status"] = 0;
+        header("location:store-menu.php?store_id={$store_id}");
         exit(1);
     }
 } else {
-    header("location:store-menu.php?store_id={$store_id}&response=0");
+    $_SESSION["server_status"] = 0;
+    header("location:store-menu.php?store_id={$store_id}");
     exit(1);
 }

@@ -18,7 +18,7 @@
 
 <body class="d-flex flex-column">
     <?php include('cstaff-nav.php') ?>
-    <div class="container p-2 pb-0 mt-5 pt-3" id="admin-dashboard">
+    <div class="container p-2 pb-0 mt-5 mb-5 pt-3" id="admin-dashboard">
         <h2 class="pt-3 display-6">View Store Rating </h2>
         <div class="row g-2 justify-content-md-end">
         </div>
