@@ -90,6 +90,10 @@
 
                     },
                 ],
+                columnDefs: [{
+                    width: '30%',
+                    targets: 5
+                }],
                 drawCallback: function() {
                     lozad('.lozad', {
                         load: function(el) {
