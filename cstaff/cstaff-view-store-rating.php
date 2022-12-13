@@ -63,7 +63,11 @@
                     {
                         data: 'rating_date'
                     }
-                ]
+                ],
+                columnDefs: [{
+                    width: '20%',
+                    targets: 3
+                }],
             });
         });
     </script>
