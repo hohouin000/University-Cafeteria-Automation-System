@@ -4,6 +4,10 @@
 <head>
   <?php session_start();
   include("conn_db.php");
+  if (isset($_SESSION["user_role"]) && !empty($_SESSION["user_role"])) {
+    header("location: index.php");
+    exit(1);
+  }
   ?>
   <?php include('head.php'); ?>
   <title>Login</title>
@@ -25,11 +29,11 @@
               <form id="form-login">
                 <div class="mb-4">
                   <label for="username" class="form-label">Username</label>
-                  <input type="text" class="form-control" id="username" required/>
+                  <input type="text" class="form-control" id="username" required />
                 </div>
                 <div class="mb-4">
                   <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password" required/>
+                  <input type="password" class="form-control" id="password" required />
                 </div>
                 <div class="d-grid">
                   <button type="submit" class="btn btn-outline-primary">Login</button>

@@ -39,7 +39,7 @@
                     <use xlink:href="#check-circle-fill" />
                 </svg>
                 <div>
-                    Digital receipt has been sent to your email.
+                    Digital receipt has been sent to <?php echo $user_email ?>.
                 </div>
             </div>
         <?php

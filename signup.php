@@ -106,7 +106,9 @@
             dataType: 'json',
             success: function(response) {
               if (response.server_status == 1) {
-                window.location.href = "index.php?response=" + response.server_status;
+                alertify.alert('Success Notification', 'Account registered successfully.', function() {
+                  window.location.href = "index.php";
+                });
               } else if (response.server_status == -1) {
                 $('#user-exist-toast').toast('show')
               } else if (response.server_status == -2) {

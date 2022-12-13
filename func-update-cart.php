@@ -16,9 +16,14 @@ if (isset($_POST["mitem-id"], $_POST["store-id"], $_POST["amount"])) {
         $store_id = htmlspecialchars($store_id);
         $user_id = htmlspecialchars($user_id);
 
-        $query = "SELECT * from cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
-        $result = $mysqli->query($query);
-        $rowcount = mysqli_num_rows($result);
+        // $query = "SELECT * from cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
+        // $result = $mysqli->query($query);
+        // $rowcount = mysqli_num_rows($result);
+        $query = $mysqli->prepare("SELECT * from cart WHERE user_id =? AND store_id =? AND mitem_id =?");
+        $query->bind_param('iii', $user_id, $store_id, $mitem_id);
+        $query->execute();
+        $result = $query->get_result();
+        $rowcount = $result->num_rows;
         if ($rowcount > 0) {
             $amount = mysqli_real_escape_string($mysqli, $_POST["amount"]);
             $remark = mysqli_real_escape_string($mysqli, $_POST["remark"]);
@@ -30,10 +35,11 @@ if (isset($_POST["mitem-id"], $_POST["store-id"], $_POST["amount"])) {
                 exit(1);
             }
 
-            $query = "UPDATE cart set cart_amount = {$amount}, cart_remark = '{$remark}' WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
-
-            $result = $mysqli->query($query);
-
+            // $query = "UPDATE cart set cart_amount = {$amount}, cart_remark = '{$remark}' WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
+            // $result = $mysqli->query($query);
+            $query = $mysqli->prepare("UPDATE cart set cart_amount =? , cart_remark =? WHERE user_id =? AND store_id =? AND mitem_id =?");
+            $query->bind_param('isiii', $amount, $remark, $user_id, $store_id, $mitem_id);
+            $result = $query->execute();
             if ($result) {
                 $_SESSION["server_status"] = 1;
                 header("location:cart.php");

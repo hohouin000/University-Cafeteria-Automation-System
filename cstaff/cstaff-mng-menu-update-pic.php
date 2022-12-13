@@ -5,7 +5,22 @@
     <?php session_start();
     include("../conn_db.php");
     include('../head.php');
-    $mitem_id = $_GET['mitem_id'];
+    if ($_SESSION["user_role"] != "CSTAFF") {
+        header("location:../restricted.php");
+        exit(1);
+    }
+
+    if (isset($_GET['mitem_id'])) {
+        if (!empty($_GET['mitem_id'])) {
+            $mitem_id = mysqli_real_escape_string($mysqli, $_GET['mitem_id']);
+        } else {
+            header("location:cstaff-mng-menu.php");
+            exit(1);
+        }
+    } else {
+        header("location:cstaff-mng-menu.php");
+        exit(1);
+    }
     ?>
 
     <title>Menu Management - Update Picture | Cafeteria Staff</title>

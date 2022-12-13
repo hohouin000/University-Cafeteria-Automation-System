@@ -109,11 +109,19 @@
                             $('#btn-modal-close-add').click();
                             $('#add-success-toast').toast('show')
                             $("#div-add-select-store").hide();
+                        } else if (response.server_status == -1) {
+                            $('#user-exist-toast').toast('show')
+                        } else if (response.server_status == -2) {
+                            $('#email-invalid-toast').toast('show')
+                        } else if (response.server_status == -3) {
+                            $('#password-invalid-toast').toast('show')
+                        } else if (response.server_status == -4) {
+                            $('#username-invalid-toast').toast('show')
                         } else {
                             table.ajax.reload();
                             $('#form-add-user')[0].reset();
                             $('#btn-modal-close-add').click();
-                            $('#add-fail-mng-user-toast').toast('show')
+                            $('#add-fail-toast').toast('show')
                             $("#div-add-select-store").hide();
                         }
                     }
@@ -189,6 +197,14 @@
                             table.ajax.reload();
                             $('#btn-modal-close-edit').click();
                             $('#edit-success-toast').toast('show')
+                        } else if (response.server_status == -1) {
+                            $('#user-exist-toast').toast('show')
+                        } else if (response.server_status == -2) {
+                            $('#email-invalid-toast').toast('show')
+                        } else if (response.server_status == -3) {
+                            $('#password-invalid-toast').toast('show')
+                        } else if (response.server_status == -4) {
+                            $('#username-invalid-toast').toast('show')
                         } else {
                             table.ajax.reload();
                             $('#btn-modal-close-edit').click();
@@ -282,11 +298,11 @@
                     <form class="row g-3" id="form-add-user">
                         <div class="col-md-6">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="modal-add-user-username" name="user-username" required>
+                            <input type="text" class="form-control" id="modal-add-user-username" name="user-username" pattern="(.){5,15}" title="Username must be minimum 5 characters length and maximum 15 characters length." required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputPassword4" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="modal-add-user-pwd" name="user-pwd" minlength="8" required>
+                            <input type="password" class="form-control" id="modal-add-user-pwd" name="user-pwd" pattern="(.){8,12}" title="Password must be minimum 8 characters length and maximum 12 characters length." required>
                         </div>
                         <div class="col-12">
                             <label for="email" class="form-label">Email</label>
@@ -344,11 +360,11 @@
                     <form class="row g-3" id="form-edit-user">
                         <div class="col-md-6">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="form-edit-username" name="user-username" required>
+                            <input type="text" class="form-control" id="form-edit-username" name="user-username" pattern="(.){5,15}" title="Username must be minimum 5 characters length and maximum 15 characters length." required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputPassword4" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="form-edit-pwd" name="user-pwd" minlength="8" required>
+                            <input type="password" class="form-control" id="form-edit-pwd" name="user-pwd" pattern="(.){8,12}" title="Password must be minimum 8 characters length and maximum 12 characters length." required>
                         </div>
                         <div class="col-12">
                             <label for="email" class="form-label">Email</label>

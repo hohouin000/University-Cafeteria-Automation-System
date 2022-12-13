@@ -12,13 +12,20 @@ if (isset($_POST["mitem-id"]) && isset($_POST["store-id"])) {
         $store_id = mysqli_real_escape_string($mysqli, $_POST["store-id"]);
         $user_id = mysqli_real_escape_string($mysqli, $_SESSION["user_id"]);
 
-        $query = "SELECT * from cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
-        $result = $mysqli->query($query);
-        $rowcount = mysqli_num_rows($result);
+        // $query = "SELECT * from cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
+        // $result = $mysqli->query($query);
+        // $rowcount = mysqli_num_rows($result);
+        $query = $mysqli->prepare("SELECT * from cart WHERE user_id =? AND store_id =? AND mitem_id =?");
+        $query->bind_param('iii', $user_id, $store_id, $mitem_id);
+        $query->execute();
+        $result = $query->get_result();
+        $rowcount = $result->num_rows;
         if ($rowcount > 0) {
-            $query = "DELETE FROM cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
-            $result = $mysqli->query($query);
-
+            // $query = "DELETE FROM cart WHERE user_id = {$user_id} AND store_id = {$store_id} AND mitem_id = {$mitem_id}";
+            // $result = $mysqli->query($query);
+            $query = $mysqli->prepare("DELETE FROM cart WHERE user_id =? AND store_id =? AND mitem_id =?");
+            $query->bind_param('iii', $user_id, $store_id, $mitem_id);
+            $result = $query->execute();
             if ($result) {
                 $_SESSION["server_status"] = 1;
                 header("location:cart.php");

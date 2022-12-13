@@ -5,8 +5,21 @@
     <?php session_start();
     include("../conn_db.php");
     include('../head.php');
-    $store_id = $_GET['store_id'];
-    echo ($store_id);
+    if ($_SESSION["user_role"] != "ADMN") {
+        header("location:../restricted.php");
+        exit(1);
+    }
+    if (isset($_GET['store_id'])) {
+        if (!empty($_GET['store_id'])) {
+            $store_id = mysqli_real_escape_string($mysqli, $_GET['store_id']);
+        } else {
+            header("location:admin-mng-store.php");
+            exit(1);
+        }
+    } else {
+        header("location:admin-mng-store.php");
+        exit(1);
+    }
     ?>
 
     <title>Store Management - Update Picture | Admin</title>

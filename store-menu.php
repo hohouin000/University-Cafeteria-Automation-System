@@ -9,6 +9,18 @@
         header("location: restricted.php");
         exit(1);
     }
+
+    if (isset($_GET["store_id"])) {
+        if (!empty($_GET["store_id"])) {
+            $store_id = mysqli_real_escape_string($mysqli, $_GET["store_id"]);
+        } else {
+            header("location: store-list.php");
+            exit(1);
+        }
+    } else {
+        header("location: store-list.php");
+        exit(1);
+    }
     ?>
     <title>Store Menu</title>
 </head>
@@ -16,10 +28,13 @@
 <body class="d-flex flex-column h-100">
     <?php
     include('nav.php');
-    $store_id = $_GET["store_id"];
-    $query = "SELECT * FROM store WHERE store_id = {$store_id}";
-    $result = $mysqli->query($query);
-    $row = $result->fetch_array();
+    // $query = "SELECT * FROM store WHERE store_id = {$store_id}";
+    // $result = $mysqli->query($query);
+    // $row = $result->fetch_array();
+    $query = $mysqli->prepare("SELECT * FROM store WHERE store_id =?");
+    $query->bind_param('i', $store_id);
+    $query->execute();
+    $row = $query->get_result()->fetch_array();
     $openhour = explode(":", $row["store_openhour"]);
     $closehour = explode(":", $row["store_closehour"]);
     ?>
@@ -68,10 +83,14 @@
 
             <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-3">
                 <?php
-                $result->free_result();
-                $query = "SELECT m.mitem_name, m.mitem_id, m.mitem_price, m.mitem_pic, SUM(od.odr_detail_amount) AS total_volume FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON m.mitem_id = od.mitem_id WHERE o.store_id = '{$store_id}'  AND o.odr_status = 'CMPLT' AND NOT(m.mitem_status = 0 ) GROUP BY od.mitem_id ORDER BY Total_Volume DESC LIMIT 5;";
-                $result = $mysqli->query($query);
-                $rowcount = mysqli_num_rows($result);
+                // $query = "SELECT m.mitem_name, m.mitem_id, m.mitem_price, m.mitem_pic, SUM(od.odr_detail_amount) AS total_volume FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON m.mitem_id = od.mitem_id WHERE o.store_id = '{$store_id}'  AND o.odr_status = 'CMPLT' AND NOT(m.mitem_status = 0 ) GROUP BY od.mitem_id ORDER BY Total_Volume DESC LIMIT 5;";
+                // $result = $mysqli->query($query);
+                // $rowcount = mysqli_num_rows($result);
+                $query = $mysqli->prepare("SELECT m.mitem_name, m.mitem_id, m.mitem_price, m.mitem_pic, SUM(od.odr_detail_amount) AS total_volume FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON m.mitem_id = od.mitem_id WHERE o.store_id =?  AND o.odr_status = 'CMPLT' AND NOT(m.mitem_status = 0 ) GROUP BY od.mitem_id ORDER BY Total_Volume DESC LIMIT 5;");
+                $query->bind_param('i', $store_id);
+                $query->execute();
+                $result = $query->get_result();
+                $rowcount = $result->num_rows;
                 if ($rowcount > 0) {
                     while ($row = $result->fetch_array()) {
                 ?>
@@ -127,10 +146,14 @@
 
             <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-3">
                 <?php
-                $result->free_result();
-                $query = "SELECT * FROM mitem WHERE store_id = {$store_id} AND NOT(mitem_status = 0 )";
-                $result = $mysqli->query($query);
-                $rowcount = mysqli_num_rows($result);
+                // $query = "SELECT * FROM mitem WHERE store_id = {$store_id} AND NOT(mitem_status = 0 )";
+                // $result = $mysqli->query($query);
+                // $rowcount = mysqli_num_rows($result);
+                $query = $mysqli->prepare("SELECT * FROM mitem WHERE store_id =? AND NOT(mitem_status = 0 )");
+                $query->bind_param('i', $store_id);
+                $query->execute();
+                $result = $query->get_result();
+                $rowcount = $result->num_rows;
                 if ($rowcount > 0) {
                     while ($row = $result->fetch_array()) {
                 ?>

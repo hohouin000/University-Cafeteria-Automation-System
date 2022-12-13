@@ -16,12 +16,20 @@
     exit(1);
   }
 
-  if (!empty(($_GET['odr_id']))) {
-    $odr_id = $_GET['odr_id'];
-    if ((isset($_SESSION["user_id"])) && (isset($_SESSION["store_id"]))) {
-      $user_id = $_SESSION["user_id"];
-      $store_id = $_SESSION["store_id"];
+  if (isset($_GET['odr_id'])) {
+    if (!empty(($_GET['odr_id']))) {
+      $odr_id = mysqli_real_escape_string($mysqli, $_GET['odr_id']);
+      if ((isset($_SESSION["user_id"])) && (isset($_SESSION["store_id"]))) {
+        $user_id = $_SESSION["user_id"];
+        $store_id = $_SESSION["store_id"];
+      }
+    } else {
+      header("location:cstaff-mng-order.php");
+      exit(1);
     }
+  } else {
+    header("location:cstaff-mng-order.php");
+    exit(1);
   }
   ?>
 </head>
@@ -30,8 +38,12 @@
   <div id="showScroll" class="container">
     <div class="receipt">
       <?php
-      $query = "SELECT s.store_name, s.store_location, u.user_fname, u.user_lname FROM store s INNER JOIN user u ON s.store_id = u.store_id WHERE s.store_id = {$store_id} AND u.user_id = {$user_id}";
-      $arr = $mysqli->query($query)->fetch_array();
+      // $query = "SELECT s.store_name, s.store_location, u.user_fname, u.user_lname FROM store s INNER JOIN user u ON s.store_id = u.store_id WHERE s.store_id = {$store_id} AND u.user_id = {$user_id}";
+      // $arr = $mysqli->query($query)->fetch_array();
+      $query = $mysqli->prepare("SELECT s.store_name, s.store_location, u.user_fname, u.user_lname FROM store s INNER JOIN user u ON s.store_id = u.store_id WHERE s.store_id =? AND u.user_id =?");
+      $query->bind_param('ii', $store_id, $user_id);
+      $query->execute();
+      $arr = $query->get_result()->fetch_array();
       ?>
       <h1 class="logo">Store:<?php echo " " . $arr['store_name'] ?></h1>
       <div class="address">
@@ -47,10 +59,14 @@
         ********************************
       </div>
       <?php
-      $query = "SELECT m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id}";
-      $result = $mysqli->query($query);
-      $rowcount = mysqli_num_rows($result);
-
+      // $query = "SELECT m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id}";
+      // $result = $mysqli->query($query);
+      // $rowcount = mysqli_num_rows($result);
+      $query = $mysqli->prepare("SELECT m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id =?");
+      $query->bind_param('i', $odr_id);
+      $query->execute();
+      $result = $query->get_result();
+      $rowcount = $result->num_rows;
       if ($rowcount > 0) {
         while ($row = $result->fetch_array()) {
       ?>
@@ -75,8 +91,12 @@
         ********************************
       </div>
       <?php
-      $query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$odr_id}";
-      $arr = $mysqli->query($query)->fetch_array();
+      // $query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$odr_id}";
+      // $arr = $mysqli->query($query)->fetch_array();
+      $query = $mysqli->prepare("SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id =?");
+      $query->bind_param('i', $odr_id);
+      $query->execute();
+      $arr = $query->get_result()->fetch_array();
       $total_price = "RM " . $arr['total_price'];
       ?>
       <div class="paymentDetails bold">

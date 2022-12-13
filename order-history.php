@@ -58,9 +58,14 @@
                 <div class="container pt-3">
                     <div class="row">
                         <?php
-                        $query = "SELECT o.odr_placedtime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status NOT IN ('CMPLT','CXLD') AND user_id = {$_SESSION['user_id']} GROUP BY odr_ref ORDER BY odr_placedtime DESC;";
-                        $result = $mysqli->query($query);
-                        $rowcount = mysqli_num_rows($result);
+                        // $query = "SELECT o.odr_placedtime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status NOT IN ('CMPLT','CXLD') AND user_id = {$_SESSION['user_id']} GROUP BY odr_ref ORDER BY odr_placedtime DESC;";
+                        // $result = $mysqli->query($query);
+                        // $rowcount = mysqli_num_rows($result);
+                        $query = $mysqli->prepare("SELECT o.odr_placedtime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status NOT IN ('CMPLT','CXLD') AND user_id =? GROUP BY odr_ref ORDER BY odr_placedtime DESC;");
+                        $query->bind_param('i', $_SESSION['user_id']);
+                        $query->execute();
+                        $result = $query->get_result();
+                        $rowcount = $result->num_rows;
                         if ($rowcount > 0) {
                             while ($row = $result->fetch_array()) {
                         ?>
@@ -97,9 +102,14 @@
                     <div class="container pt-3">
                         <div class="row">
                             <?php
-                            $query = "SELECT o.odr_compltime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status = 'CMPLT' AND user_id = {$_SESSION['user_id']} GROUP BY odr_ref ORDER BY odr_compltime DESC;";
-                            $result = $mysqli->query($query);
-                            $rowcount = mysqli_num_rows($result);
+                            // $query = "SELECT o.odr_compltime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status = 'CMPLT' AND user_id = {$_SESSION['user_id']} GROUP BY odr_ref ORDER BY odr_compltime DESC;";
+                            // $result = $mysqli->query($query);
+                            // $rowcount = mysqli_num_rows($result);
+                            $query = $mysqli->prepare("SELECT o.odr_compltime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status = 'CMPLT' AND user_id =? GROUP BY odr_ref ORDER BY odr_compltime DESC;");
+                            $query->bind_param('i', $_SESSION['user_id']);
+                            $query->execute();
+                            $result = $query->get_result();
+                            $rowcount = $result->num_rows;
                             if ($rowcount > 0) {
                                 while ($row = $result->fetch_array()) {
                             ?>
@@ -137,9 +147,14 @@
                     <div class="container pt-3">
                         <div class="row">
                             <?php
-                            $query = "SELECT o.odr_cxldtime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status = 'CXLD' AND user_id = {$_SESSION['user_id']} GROUP BY odr_ref ORDER BY odr_cxldtime DESC;";
-                            $result = $mysqli->query($query);
-                            $rowcount = mysqli_num_rows($result);
+                            // $query = "SELECT o.odr_cxldtime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status = 'CXLD' AND user_id = {$_SESSION['user_id']} GROUP BY odr_ref ORDER BY odr_cxldtime DESC;";
+                            // $result = $mysqli->query($query);
+                            // $rowcount = mysqli_num_rows($result);
+                            $query = $mysqli->prepare("SELECT o.odr_cxldtime, o.odr_id, o.odr_ref, s.store_name, COUNT(m.mitem_id) as 'itemcount' FROM odr o INNER JOIN store s on o.store_id = s.store_id INNER JOIN odr_detail od on o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE odr_status = 'CXLD' AND user_id =? GROUP BY odr_ref ORDER BY odr_cxldtime DESC;");
+                            $query->bind_param('i', $_SESSION['user_id']);
+                            $query->execute();
+                            $result = $query->get_result();
+                            $rowcount = $result->num_rows;
                             if ($rowcount > 0) {
                                 while ($row = $result->fetch_array()) {
                             ?>

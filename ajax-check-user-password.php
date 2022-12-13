@@ -15,10 +15,14 @@ if (isset($_POST['user_id'], $_POST['user_pwd'], $_POST['user_new_pwd'])) {
             exit(1);
         }
 
-        $query = "SELECT * FROM user  WHERE user_id = {$user_id} AND user_pwd = '{$user_pwd}';";
-        $result = $mysqli->query($query);
-        $rowcount = mysqli_num_rows($result);
-
+        // $query = "SELECT * FROM user  WHERE user_id = {$user_id} AND user_pwd = '{$user_pwd}';";
+        // $result = $mysqli->query($query);
+        // $rowcount = mysqli_num_rows($result);
+        $query = $mysqli->prepare("SELECT * FROM user  WHERE user_id =? AND user_pwd =? ;");
+        $query->bind_param('is', $user_id, $user_pwd);
+        $query->execute();
+        $result = $query->get_result();
+        $rowcount = $result->num_rows;
         if ($rowcount > 0) {
             $query = $mysqli->prepare("UPDATE user SET user_pwd =? WHERE user_id =?;");
             $query->bind_param('si', $user_new_pwd, $user_id);

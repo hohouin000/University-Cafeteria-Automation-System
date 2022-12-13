@@ -5,10 +5,19 @@
     <?php session_start();
     include("conn_db.php");
     include('head.php');
-    if (!isset($_GET["store_id"]) && !isset($_GET["mitem_id"])) {
-        header("location: restricted.php");
+    if (isset($_GET["store_id"]) && isset($_GET["mitem_id"])) {
+        if (!empty($_GET["store_id"]) && !empty($_GET["mitem_id"])) {
+            $store_id = mysqli_real_escape_string($mysqli, $_GET["store_id"]);
+            $mitem_id = mysqli_real_escape_string($mysqli, $_GET["mitem_id"]);
+        } else {
+            header("location: store-list.php");
+            exit(1);
+        }
+    } else {
+        header("location: store-list.php");
         exit(1);
     }
+
     if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] != "CUST")) {
         header("location: login.php");
         exit(1);
@@ -20,11 +29,13 @@
 <body class="d-flex flex-column h-100">
     <?php
     include('nav.php');
-    $store_id = $_GET["store_id"];
-    $mitem_id = $_GET["mitem_id"];
-    $query = "SELECT m.*,s.* FROM mitem m INNER JOIN store s ON m.store_id = s.store_id WHERE m.store_id = {$store_id} AND m.mitem_id = {$mitem_id}";
-    $result = $mysqli->query($query);
-    $row = $result->fetch_array();
+    // $query = "SELECT m.*,s.* FROM mitem m INNER JOIN store s ON m.store_id = s.store_id WHERE m.store_id = {$store_id} AND m.mitem_id = {$mitem_id}";
+    // $result = $mysqli->query($query);
+    // $row = $result->fetch_array();
+    $query = $mysqli->prepare("SELECT m.*,s.* FROM mitem m INNER JOIN store s ON m.store_id = s.store_id WHERE m.store_id =? AND m.mitem_id =?");
+    $query->bind_param('ii', $store_id, $mitem_id);
+    $query->execute();
+    $row = $query->get_result()->fetch_array();
     ?>
     <div class="container p-5" id="menuitem-dashboard" style="margin-top:5%;">
         <div class="row my-3">
@@ -51,11 +62,19 @@
                         </div>
                         <button class="btn btn-info w-100" type="submit" title="add-to-cart" name="btn-submit" id="btn-submit">
                             <?php
-                            $query = "SELECT COUNT(*) AS itemcnt FROM cart WHERE user_id = {$_SESSION['user_id']}";
-                            $row = $mysqli->query($query)->fetch_array();
+                            // $query = "SELECT COUNT(*) AS itemcnt FROM cart WHERE user_id = {$_SESSION['user_id']}";
+                            // $row = $mysqli->query($query)->fetch_array();
+                            $query = $mysqli->prepare("SELECT COUNT(*) AS itemcnt FROM cart WHERE user_id =?");
+                            $query->bind_param('i', $_SESSION['user_id']);
+                            $query->execute();
+                            $row = $query->get_result()->fetch_array();
                             if ($row["itemcnt"] > 0) {
-                                $query2 = "SELECT COUNT(*) AS itemcnt FROM cart WHERE user_id = {$_SESSION['user_id']} AND store_id = {$store_id}";
-                                $row2 = $mysqli->query($query2)->fetch_array();
+                                // $query2 = "SELECT COUNT(*) AS itemcnt FROM cart WHERE user_id = {$_SESSION['user_id']} AND store_id = {$store_id}";
+                                // $row2 = $mysqli->query($query2)->fetch_array();
+                                $query2 = $mysqli->prepare("SELECT COUNT(*) AS itemcnt FROM cart WHERE user_id =? AND store_id =?");
+                                $query2->bind_param('ii', $_SESSION['user_id'], $store_id);
+                                $query2->execute();
+                                $row2 = $query2->get_result()->fetch_array();
                                 // if ($row2["itemcnt"] == 0) { 
                                 // }
                             }
@@ -76,7 +95,7 @@
                 var cnt = "<?php echo $row2["itemcnt"]; ?>";
                 if (cnt == 0) {
                     e.preventDefault();
-                    alertify.confirm('Shop Change Notification', 'You have already selected different store. If you wish to continue, the current items added in your cart will be automatically removed.', function() {
+                    alertify.confirm('Store Change Notification', 'You have already selected different store. If you wish to continue, the current items added in your cart will be automatically removed.', function() {
                             $("#form-atc")[0].submit();
                         },
                         function() {});

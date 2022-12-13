@@ -5,10 +5,19 @@
     <?php session_start();
     include("conn_db.php");
     include('head.php');
-    if (!isset($_GET["store_id"]) && !isset($_GET["mitem_id"])) {
-        header("location: restricted.php");
+    if (isset($_GET["store_id"]) && isset($_GET["mitem_id"])) {
+        if (!empty($_GET["store_id"]) && !empty($_GET["mitem_id"])) {
+            $store_id = mysqli_real_escape_string($mysqli, $_GET["store_id"]);
+            $mitem_id = mysqli_real_escape_string($mysqli, $_GET["mitem_id"]);
+        } else {
+            header("location: cart.php");
+            exit(1);
+        }
+    } else {
+        header("location: cart.php");
         exit(1);
     }
+
     if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] != "CUST")) {
         header("location: login.php");
         exit(1);
@@ -20,11 +29,13 @@
 <body class="d-flex flex-column h-100">
     <?php
     include('nav.php');
-    $store_id = $_GET["store_id"];
-    $mitem_id = $_GET["mitem_id"];
-    $query = "SELECT m.*,s.* FROM mitem m INNER JOIN store s ON m.store_id = s.store_id WHERE m.store_id = {$store_id} AND m.mitem_id = {$mitem_id}";
-    $result = $mysqli->query($query);
-    $row = $result->fetch_array();
+    // $query = "SELECT m.*,s.* FROM mitem m INNER JOIN store s ON m.store_id = s.store_id WHERE m.store_id = {$store_id} AND m.mitem_id = {$mitem_id}";
+    // $result = $mysqli->query($query);
+    // $row = $result->fetch_array();
+    $query =  $mysqli->prepare("SELECT m.*,s.* FROM mitem m INNER JOIN store s ON m.store_id = s.store_id WHERE m.store_id =? AND m.mitem_id =?");
+    $query->bind_param('ii', $store_id, $mitem_id);
+    $query->execute();
+    $row = $query->get_result()->fetch_array();
     ?>
     <div class="container p-5" id="menuitem-dashboard" style="margin-top:5%; margin-bottom:12%;">
         <div class="row my-3">
@@ -41,8 +52,12 @@
                 <h1 class="fw-light"><?php echo $row["mitem_name"] ?></h1>
                 <h3 class="fw-light">RM <?php echo $row["mitem_price"] ?></h3>
                 <?php
-                $cart_query = "SELECT * FROM cart WHERE user_id = {$_SESSION['user_id']} AND mitem_id = {$mitem_id} AND store_id = {$store_id}";
-                $cart_result = $mysqli->query($cart_query)->fetch_array();
+                // $cart_query = "SELECT * FROM cart WHERE user_id = {$_SESSION['user_id']} AND mitem_id = {$mitem_id} AND store_id = {$store_id}";
+                // $cart_result = $mysqli->query($cart_query)->fetch_array();
+                $cart_query = $mysqli->prepare("SELECT * FROM cart WHERE user_id =? AND mitem_id =? AND store_id =?");
+                $cart_query->bind_param('iii', $_SESSION['user_id'], $mitem_id, $store_id);
+                $cart_query->execute();
+                $cart_result = $cart_query->get_result()->fetch_array();
                 ?>
                 <div class="form">
                     <form class="mt-3" id="form-atc" method="POST" action="func-update-cart.php">

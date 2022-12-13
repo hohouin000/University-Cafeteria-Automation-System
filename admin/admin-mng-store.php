@@ -109,28 +109,40 @@
             // Add Store AJAX Call Starts here
             $("#form-add-store").on('submit', function(e) {
                 e.preventDefault();
-                $.ajax({
-                    url: "ajax-admin-add-store.php",
-                    type: "POST",
-                    data: new FormData(this),
-                    dataType: 'json',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.server_status == 1) {
-                            table.ajax.reload();
-                            $('#form-add-store')[0].reset();
-                            $('#btn-modal-close-add').click();
-                            $('#add-success-toast').toast('show')
-                        } else {
-                            table.ajax.reload();
-                            $('#form-add-store')[0].reset();
-                            $('#btn-modal-close-add').click();
-                            $('#add-fail-mng-store-toast').toast('show')
+                var store_openhour = $('#form-add-store-openhour').val()
+                var store_closehour = $('#form-add-store-closehour').val()
+                if (store_openhour > store_closehour) {
+                    $('#hour-invalid-toast').toast('show')
+                    return false;
+                } else {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "ajax-admin-add-store.php",
+                        type: "POST",
+                        data: new FormData(this),
+                        dataType: 'json',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response) {
+                            if (response.server_status == 1) {
+                                table.ajax.reload();
+                                $('#form-add-store')[0].reset();
+                                $('#btn-modal-close-add').click();
+                                $('#add-success-toast').toast('show')
+                            } else if (response.server_status == -1) {
+                                $('#store-exist-toast').toast('show')
+                            } else if (response.server_status == -2) {
+                                $('#hour-invalid-toast').toast('show')
+                            } else {
+                                table.ajax.reload();
+                                $('#form-add-store')[0].reset();
+                                $('#btn-modal-close-add').click();
+                                $('#add-fail-toast').toast('show')
+                            }
                         }
-                    }
-                });
+                    });
+                }
             });
 
             // Delete Store AJAX Call Starts here
@@ -189,43 +201,55 @@
             })
 
             $("#form-edit-store").on('submit', function(e) {
-                // Get Selected Store Details in Modal
                 e.preventDefault();
-                var store_name = $('#form-edit-store-name').val()
-                var store_location = $('#form-edit-store-location').val()
                 var store_openhour = $('#form-edit-store-openhour').val()
                 var store_closehour = $('#form-edit-store-closehour').val()
-                var store_status;
-
-                if ($('#form-edit-store-status').is(':checked')) {
-                    store_status = 1;
+                if (store_openhour > store_closehour) {
+                    $('#hour-invalid-toast').toast('show')
+                    return false;
                 } else {
-                    store_status = 0;
-                }
+                    // Get Selected Store Details in Modal
+                    e.preventDefault();
+                    var store_name = $('#form-edit-store-name').val()
+                    var store_location = $('#form-edit-store-location').val()
+                    var store_openhour = $('#form-edit-store-openhour').val()
+                    var store_closehour = $('#form-edit-store-closehour').val()
+                    var store_status;
 
-                // Update AJAX Call Starts here
-                $.ajax({
-                    url: "ajax-admin-update-store.php",
-                    type: "POST",
-                    data: {
-                        "store_id": store_id,
-                        "store_name": store_name,
-                        "store_location": store_location,
-                        "store_openhour": store_openhour,
-                        "store_closehour": store_closehour,
-                        "store_status": store_status,
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.server_status == 1) {
-                            table.ajax.reload();
-                            $('#btn-modal-close-edit').click();
-                            $('#edit-success-toast').toast('show')
-                        } else {
-                            $('#edit-fail-toast').toast('show')
-                        }
+                    if ($('#form-edit-store-status').is(':checked')) {
+                        store_status = 1;
+                    } else {
+                        store_status = 0;
                     }
-                })
+
+                    // Update AJAX Call Starts here
+                    $.ajax({
+                        url: "ajax-admin-update-store.php",
+                        type: "POST",
+                        data: {
+                            "store_id": store_id,
+                            "store_name": store_name,
+                            "store_location": store_location,
+                            "store_openhour": store_openhour,
+                            "store_closehour": store_closehour,
+                            "store_status": store_status,
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.server_status == 1) {
+                                table.ajax.reload();
+                                $('#btn-modal-close-edit').click();
+                                $('#edit-success-toast').toast('show')
+                            } else if (response.server_status == -1) {
+                                $('#store-exist-toast').toast('show')
+                            } else if (response.server_status == -2) {
+                                $('#hour-invalid-toast').toast('show')
+                            } else {
+                                $('#edit-fail-toast').toast('show')
+                            }
+                        }
+                    })
+                }
             });
 
             // File type validation
@@ -269,13 +293,13 @@
                         <div class="row row-cols-2 g-2 mb-2">
                             <div class="col">
                                 <div class="form-floating">
-                                    <input type="time" class="form-control" placeholder="Open Hour" name="store-openhour" required>
+                                    <input type="time" class="form-control" placeholder="Open Hour" id="form-add-store-openhour" name="store-openhour" required>
                                     <label for="storeopenhour">Open Hour</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-floating">
-                                    <input type="time" class="form-control" placeholder="Close Hour" name="store-closehour" required>
+                                    <input type="time" class="form-control" placeholder="Close Hour" id="form-add-store-closehour" name="store-closehour" required>
                                     <label for="storeopenhour">Close Hour</label>
                                 </div>
                             </div>

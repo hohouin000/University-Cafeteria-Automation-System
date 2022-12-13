@@ -1,6 +1,10 @@
 <?php
 session_start();
 include("../conn_db.php");
+if ($_SESSION["user_role"] != "ADMN") {
+    header("location:../restricted.php");
+    exit(1);
+}
 
 $query = "SELECT * FROM store;";
 $result = $mysqli->query($query);

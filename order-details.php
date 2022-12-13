@@ -5,10 +5,18 @@
     <?php session_start();
     include("conn_db.php");
     include('head.php');
-    if (!isset($_GET["odr_id"])) {
-        header("location: restricted.php");
+    if (isset($_GET["odr_id"])) {
+        if (!empty($_GET["odr_id"])) {
+            $odr_id = mysqli_real_escape_string($mysqli, $_GET["odr_id"]);
+        } else {
+            header("location: order-history.php");
+            exit(1);
+        }
+    } else {
+        header("location: order-history.php");
         exit(1);
     }
+
     if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] != "CUST")) {
         header("location: login.php");
         exit(1);
@@ -30,14 +38,30 @@
             <div class="container pt-2 mt-5">
                 <?php
                 $total = 0;
-                $odr_id = $_GET["odr_id"];
-                $query = "SELECT odr_ref FROM odr WHERE odr_id = {$odr_id}";
-                $arr = $mysqli->query($query)->fetch_array();
+                // $query = "SELECT odr_ref FROM odr WHERE odr_id = {$odr_id}";
+                // $arr = $mysqli->query($query)->fetch_array();
+                $query = $mysqli->prepare("SELECT odr_ref FROM odr WHERE odr_id =?");
+                $query->bind_param('i', $odr_id);
+                $query->execute();
+                $arr = $query->get_result()->fetch_array();
                 $odr_ref = $arr['odr_ref'];
 
-                $query = "SELECT SUM(od.odr_detail_amount * od.odr_detail_price)as 'total', m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id} GROUP BY m.mitem_name";
-                $result = $mysqli->query($query);
-                $rowcount = mysqli_num_rows($result);
+                // $query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$odr_id}";
+                // $arr = $mysqli->query($query)->fetch_array();
+                $query = $mysqli->prepare("SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id =?");
+                $query->bind_param('i', $odr_id);
+                $query->execute();
+                $arr = $query->get_result()->fetch_array();
+                $total = $arr['total_price'];
+
+                // $query = "SELECT SUM(od.odr_detail_amount * od.odr_detail_price)as 'total', m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id} GROUP BY m.mitem_name";
+                // $result = $mysqli->query($query);
+                // $rowcount = mysqli_num_rows($result);
+                $query =  $mysqli->prepare("SELECT SUM(od.odr_detail_amount * od.odr_detail_price)as 'total', m.mitem_name,od.odr_detail_amount,od.odr_detail_price,od.odr_detail_remark FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id =? GROUP BY m.mitem_name");
+                $query->bind_param('i', $odr_id);
+                $query->execute();
+                $result = $query->get_result();
+                $rowcount = $result->num_rows;
                 if ($rowcount > 0) {
                 ?>
                     <p>
@@ -45,7 +69,6 @@
                         <b>Order Summary</b><br />
                         <?php
                         while ($row = $result->fetch_array()) {
-                            $total = $row["total"];
                         ?>
                             <?php echo $row["odr_detail_amount"] . "X " ?>
                             <?php
@@ -76,11 +99,17 @@
         </div>
         <section>
             <?php
-            $query = "SELECT o.*, SUM(od.odr_detail_amount*od.odr_detail_price) AS total_price FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id WHERE o.odr_id = {$odr_id};";
-            $result = $mysqli->query($query);
-            $rowcount = mysqli_num_rows($result);
+            // $query = "SELECT o.*, SUM(od.odr_detail_amount*od.odr_detail_price) AS total_price FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id WHERE o.odr_id = {$odr_id};";
+            // $result = $mysqli->query($query);
+            // $rowcount = mysqli_num_rows($result);
+            $query = $mysqli->prepare("SELECT o.*, SUM(od.odr_detail_amount*od.odr_detail_price) AS total_price FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id WHERE o.odr_id =?;");
+            $query->bind_param('i', $odr_id);
+            $query->execute();
+            $result = $query->get_result();
+            $rowcount = $result->num_rows;
             if ($rowcount > 0) {
-                $arr = $mysqli->query($query)->fetch_array();
+                // $arr = $mysqli->query($query)->fetch_array();
+                $arr = $result->fetch_array();
             ?>
                 <div class="container py-5">
                     <div class="row d-flex justify-content-center align-items-center">

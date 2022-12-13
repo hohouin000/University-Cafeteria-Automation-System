@@ -29,7 +29,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php
-                unset($_SESSION['server_status']);  
+                unset($_SESSION['server_status']);
             } else {
             ?>
                 <div class="alert alert-warning alert-dismissible fade show mt-3 mb-3" role="alert">
@@ -46,11 +46,17 @@
                 <i class="fa-solid fa-caret-left"> Go back</i></a>
         </div>
         <?php
-        $query = "SELECT * FROM store s WHERE store_id = (SELECT store_id FROM cart WHERE user_id = {$_SESSION['user_id']} LIMIT 0,1)";
-        $result = $mysqli->query($query);
-        $rowcount = mysqli_num_rows($result);
+        // $query = "SELECT * FROM store s WHERE store_id = (SELECT store_id FROM cart WHERE user_id = {$_SESSION['user_id']} LIMIT 0,1)";
+        // $result = $mysqli->query($query);
+        // $rowcount = mysqli_num_rows($result);
+        $query = $mysqli->prepare("SELECT * FROM store s WHERE store_id = (SELECT store_id FROM cart WHERE user_id =? LIMIT 0,1)");
+        $query->bind_param('i', $_SESSION['user_id']);
+        $query->execute();
+        $result = $query->get_result();
+        $rowcount = $result->num_rows;
         if ($rowcount > 0) {
-            $arr = $result->fetch_array();
+            // $arr = $result->fetch_array();
+            $arr = $result->fetch_assoc();
             $store_open = $arr["store_openhour"];
             $store_close = $arr["store_closehour"];
             $curr_time = date("H:i");
@@ -75,8 +81,12 @@
                                 </div>
                                 <div class="card-body">
                                     <?php
-                                    $cart_query = "SELECT c.*, m.* FROM cart c INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']}";
-                                    $cart_result = $mysqli->query($cart_query);
+                                    // $cart_query = "SELECT c.*, m.* FROM cart c INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']}";
+                                    // $cart_result = $mysqli->query($cart_query);
+                                    $cart_query = $mysqli->prepare("SELECT c.*, m.* FROM cart c INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id =?");
+                                    $cart_query->bind_param('i', $_SESSION['user_id']);
+                                    $cart_query->execute();
+                                    $cart_result = $cart_query->get_result();
                                     while ($row = $cart_result->fetch_array()) {
                                         $total_price =  $row["cart_amount"] * $row["mitem_price"];
                                     ?>
@@ -139,8 +149,12 @@
                                 </div>
                                 <div class="card-body">
                                     <?php
-                                    $sum_query = "SELECT SUM(c.cart_amount*m.mitem_price) AS total_price FROM cart c INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']}";
-                                    $sum_arr = $mysqli->query($sum_query)->fetch_array();
+                                    // $sum_query = "SELECT SUM(c.cart_amount*m.mitem_price) AS total_price FROM cart c INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']}";
+                                    // $sum_arr = $mysqli->query($sum_query)->fetch_array();
+                                    $sum_query = $mysqli->prepare("SELECT SUM(c.cart_amount*m.mitem_price) AS total_price FROM cart c INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id =?");
+                                    $sum_query->bind_param('i', $_SESSION['user_id']);
+                                    $sum_query->execute();
+                                    $sum_arr = $sum_query->get_result()->fetch_array();
                                     ?>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">

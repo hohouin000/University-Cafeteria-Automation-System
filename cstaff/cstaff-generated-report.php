@@ -10,9 +10,14 @@
         exit(1);
     }
     if (isset($_POST["start_date"]) && (isset($_POST["end_date"])) && (isset($_SESSION["store_id"]))) {
-        $start_date = $_POST["start_date"];
-        $end_date = $_POST["end_date"];
-        $store_id = $_SESSION["store_id"];
+        if (!empty($_POST["start_date"]) && !empty($_POST["end_date"]) && !empty($_SESSION["store_id"])) {
+            $start_date = mysqli_real_escape_string($mysqli, $_POST["start_date"]);
+            $end_date = mysqli_real_escape_string($mysqli, $_POST["end_date"]);
+            $store_id = $_SESSION["store_id"];
+        } else {
+            header("location: cstaff-report-generation.php");
+            exit(1);
+        }
     } else {
         header("location: cstaff-report-generation.php");
         exit(1);
@@ -304,7 +309,7 @@
                     data: <?php echo json_encode($sub_total) ?>,
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(93, 190, 255, 0.3)',
-                    stack: 'combined',
+                    //stack: 'combined',
                     type: 'bar',
                 },
                 {
@@ -313,7 +318,7 @@
                     borderColor: 'rgb(255, 99, 132)',
                     pointBackgroundColor: 'rgb(255, 255, 255)',
                     backgroundColor: 'rgba(255, 99, 132, 0.3)',
-                    stack: 'combined',
+                    //stack: 'combined',
                     type: 'bar',
                 },
             ]
@@ -346,7 +351,7 @@
                 },
                 scales: {
                     y: {
-                        stacked: true
+                       beginAtZero: true
                     }
                 },
                 elements: {

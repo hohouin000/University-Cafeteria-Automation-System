@@ -4,16 +4,18 @@ include('conn_db.php');
 if (isset($_POST['user_username'], $_POST['user_pwd'])) {
     $user_pwd = mysqli_real_escape_string($mysqli, $_POST['user_pwd']);
     $user_username = mysqli_real_escape_string($mysqli, $_POST['user_username']);
-    $user_pwd = htmlspecialchars($user_pwd);
-    $user_username = htmlspecialchars($user_username);
 
-    $query = "SELECT * FROM user WHERE
-    user_username = '$user_username' AND user_pwd = '$user_pwd' AND user_role = 'CUST' LIMIT 0,1";
-
-    $result = $mysqli->query($query);
-    $rowcount = mysqli_num_rows($result);
+    // $query = "SELECT * FROM user WHERE
+    // user_username = '$user_username' AND user_pwd = '$user_pwd' AND user_role = 'CUST' LIMIT 0,1";
+    // $result = $mysqli->query($query);
+    // $rowcount = mysqli_num_rows($result);
+    $query = $mysqli->prepare("SELECT * FROM user WHERE user_username =? AND user_pwd =? AND user_role = 'CUST' LIMIT 0,1");
+    $query->bind_param('ss', $user_username, $user_pwd);
+    $query->execute();
+    $result = $query->get_result();
+    $rowcount = $result->num_rows;
     if ($rowcount > 0) {
-        $row = $result->fetch_array();
+        $row = $result->fetch_assoc();
         $_SESSION["user_id"] = $row["user_id"];
         $_SESSION["user_username"] = $row["user_username"];
         $_SESSION["user_fname"] = $row["user_fname"];

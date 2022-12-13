@@ -121,7 +121,7 @@
                             table.ajax.reload();
                             $('#form-add-menu-item')[0].reset();
                             $('#btn-modal-close-add').click();
-                            $('#add-fail-mng-store-toast').toast('show')
+                            $('#add-fail-toast').toast('show')
                         }
                     }
                 });
@@ -209,6 +209,7 @@
                             $('#btn-modal-close-edit').click();
                             $('#edit-success-toast').toast('show')
                         } else {
+                            $('#btn-modal-close-edit').click();
                             $('#edit-fail-toast').toast('show')
                         }
                     }
@@ -251,7 +252,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="storelocation" class="form-label">Item Price</label>
-                            <input type="number" step='0.01' value='0.00' placeholder='0.00' class="form-control" name="mitem-price" required>
+                            <input type="number" step='0.10' value='1.00' placeholder='0.00' min="1" class="form-control" name="mitem-price" required>
                         </div>
                         <div class="col-12">
                             <div class="form-check form-switch">
@@ -288,7 +289,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="storelocation" class="form-label">Item Price</label>
-                            <input type="number" step='0.01' value='0.00' placeholder='0.00' class="form-control" id="form-edit-item-price" required>
+                            <input type="number" step='0.10' value='1.00' placeholder='0.00' min="1" class="form-control" id="form-edit-item-price" required>
                         </div>
                         <div class="col-12">
                             <div class="form-check form-switch">

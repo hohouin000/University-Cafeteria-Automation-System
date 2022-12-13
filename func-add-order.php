@@ -96,6 +96,7 @@ if ($store_closed == 0) {
                 header("location: order-success.php?odr={$odr_id}");
             }
         } else {
+            $_SESSION["server_status"] = 1;
             header("location: order-success.php?odr={$odr_id}");
         }
         exit(1);

@@ -34,12 +34,16 @@
                     $i = 0;
                     $recommendation = array();
                     $recommendation = func_recommendation($matrix, $_SESSION['user_id']);
-                    arsort($recommendation);
                     if (!empty($recommendation)) {
+                        arsort($recommendation);
                         foreach ($recommendation as $store_id => $rating) {
                             if ($i <= 5) {
-                                $query = "SELECT * FROM store WHERE store_id = {$store_id};";
-                                $arr = $mysqli->query($query)->fetch_array();
+                                // $query = "SELECT * FROM store WHERE store_id = {$store_id};";
+                                // $arr = $mysqli->query($query)->fetch_array();
+                                $query = $mysqli->prepare("SELECT * FROM store WHERE store_id =?;");
+                                $query->bind_param('i', $store_id);
+                                $query->execute();
+                                $arr = $query->get_result()->fetch_array();
             ?>
                                 <div class="col">
                                     <div class="card border-info p-25">

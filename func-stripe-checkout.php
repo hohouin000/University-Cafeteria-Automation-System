@@ -9,13 +9,21 @@ if (isset($_POST['total-amount'])) {
         $stripe = new Stripe\StripeClient("sk_test_51MBGiuHGbqwDRBAKP9yCcv2q4EltFvPh5UbpMCRCpn7PkS2diEAlKfoe4ZHsRJYLnHZt0qKExGlbb1UI962x70cn00mLE1tInW");
         header('Content-Type', 'application/json');
 
-        $store_query = "SELECT * FROM store WHERE store_id = (SELECT store_id FROM cart WHERE user_id = {$_SESSION['user_id']} GROUP BY user_id)";
-        $store_arr = $mysqli->query($store_query)->fetch_array();
+        // $store_query = "SELECT * FROM store WHERE store_id = (SELECT store_id FROM cart WHERE user_id = {$_SESSION['user_id']} GROUP BY user_id)";
+        // $store_arr = $mysqli->query($store_query)->fetch_array();
+        $store_query = $mysqli->prepare("SELECT * FROM store WHERE store_id = (SELECT store_id FROM cart WHERE user_id =? GROUP BY user_id)");
+        $store_query->bind_param('i', $_SESSION['user_id']);
+        $store_query->execute();
+        $store_arr = $store_query->get_result()->fetch_assoc();
         $store_id = $store_arr["store_id"];
         $store_name = $store_arr["store_name"];
 
-        $query = "SELECT c.*, m.*, u.* FROM user u INNER JOIN cart c ON u.user_id = c.user_id INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']} AND c.store_id = {$store_id};";
-        $result = $mysqli->query($query);
+        // $query = "SELECT c.*, m.*, u.* FROM user u INNER JOIN cart c ON u.user_id = c.user_id INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id = {$_SESSION['user_id']} AND c.store_id = {$store_id};";
+        // $result = $mysqli->query($query);
+        $query =  $mysqli->prepare("SELECT c.*, m.*, u.* FROM user u INNER JOIN cart c ON u.user_id = c.user_id INNER JOIN mitem m ON c.mitem_id = m.mitem_id WHERE c.user_id =? AND c.store_id =?;");
+        $query->bind_param('ii', $_SESSION['user_id'], $store_id);
+        $query->execute();
+        $result = $query->get_result();
         $line_items_array = [];
 
         while ($row = $result->fetch_object()) {

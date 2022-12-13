@@ -6,20 +6,30 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
 $mail_status = 0;
+$user_email = "";
 if (isset($_SESSION["server_status"], $_GET["odr"])) {
     if (!empty($_GET["odr"])) {
         if ($_SESSION["server_status"] == 1) {
-            $odr_id = $_GET["odr"];
-            $query = "SELECT o.*, u.user_email, s.store_name FROM odr o INNER JOIN user u ON o.user_id = u.user_id INNER JOIN store s ON o.store_id = s.store_id WHERE o.odr_id = {$odr_id};";
-            $arr = $mysqli->query($query)->fetch_array();
+            $odr_id =  mysqli_real_escape_string($mysqli, $_GET["odr"]);
+            // $query = "SELECT o.*, u.user_email, s.store_name FROM odr o INNER JOIN user u ON o.user_id = u.user_id INNER JOIN store s ON o.store_id = s.store_id WHERE o.odr_id = {$odr_id};";
+            // $arr = $mysqli->query($query)->fetch_array();
+            $query = $mysqli->prepare("SELECT o.*, u.user_email, s.store_name FROM odr o INNER JOIN user u ON o.user_id = u.user_id INNER JOIN store s ON o.store_id = s.store_id WHERE o.odr_id =?;");
+            $query->bind_param('i', $odr_id);
+            $query->execute();
+            $arr = $query->get_result()->fetch_assoc();
             $user_email = $arr['user_email'];
             $odr_ref = $arr['odr_ref'];
             $store_name = $arr['store_name'];
             $date = date("jS-M-Y");
             $details = "";
-            $odr_detail_query = "SELECT m.*,od.* FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id}";
-            $odr_detail_result = $mysqli->query($odr_detail_query);
-            while ($odr_detail_row = $odr_detail_result->fetch_array()) {
+            // $odr_detail_query = "SELECT m.*,od.* FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id = {$odr_id}";
+            // $odr_detail_result = $mysqli->query($odr_detail_query);
+            $odr_detail_query = $mysqli->prepare("SELECT m.*,od.* FROM odr_detail od INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE od.odr_id =?");
+            $odr_detail_query->bind_param('i', $odr_id);
+            $odr_detail_query->execute();
+            $odr_detail_result = $odr_detail_query->get_result();
+            // while ($odr_detail_row = $odr_detail_result->fetch_array()) {
+            while ($odr_detail_row = $odr_detail_result->fetch_assoc()) {
                 if ($odr_detail_row["odr_detail_remark"] != "") {
                     $mitem = $odr_detail_row["odr_detail_amount"] . "<b>x</b> " . $odr_detail_row["mitem_name"] . " (" . $odr_detail_row["odr_detail_remark"] . ")";
                 } else {
@@ -29,8 +39,12 @@ if (isset($_SESSION["server_status"], $_GET["odr"])) {
                 $details .=
                     "<tr><td>$mitem</td><td class='alignright'>$price</td></tr>";
             }
-            $odr_query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$odr_id}";
-            $odr_arr = $mysqli->query($odr_query)->fetch_array();
+            // $odr_query = "SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id = {$odr_id}";
+            // $odr_arr = $mysqli->query($odr_query)->fetch_array();
+            $odr_query = $mysqli->prepare("SELECT SUM(odr_detail_amount*odr_detail_price) AS total_price FROM odr_detail WHERE odr_id =?");
+            $odr_query->bind_param('i', $odr_id);
+            $odr_query->execute();
+            $odr_arr = $odr_query->get_result()->fetch_assoc();
             $total_price = "RM " . $odr_arr['total_price'];
             $page = "
 <!DOCTYPE html>
@@ -352,7 +366,6 @@ if (isset($_SESSION["server_status"], $_GET["odr"])) {
             $mail->isHTML(true);
             $mail->Body = $page;
             $mail->addAddress($user_email);
-            $mail->Send();
             if ($mail->Send()) {
                 $mail_status = 1;
             }

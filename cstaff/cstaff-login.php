@@ -4,6 +4,10 @@
 <head>
   <?php session_start();
   include("../conn_db.php");
+  if (isset($_SESSION["user_role"]) && !empty($_SESSION["user_role"])) {
+    header("location: cstaff-home.php");
+    exit(1);
+  }
   ?>
   <?php include('../head.php'); ?>
   <link href="../css/login.css" rel="stylesheet" />

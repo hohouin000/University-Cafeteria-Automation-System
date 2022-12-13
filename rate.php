@@ -5,10 +5,18 @@
     <?php session_start();
     include("conn_db.php");
     include('head.php');
-    if (!isset($_GET["odr_id"])) {
-        header("location: restricted.php");
+    if (isset($_GET["odr_id"])) {
+        if (!empty($_GET["odr_id"])) {
+            $odr_id = mysqli_real_escape_string($mysqli, $_GET["odr_id"]);
+        } else {
+            header("location: order-history.php");
+            exit(1);
+        }
+    } else {
+        header("location: order-history.php");
         exit(1);
     }
+
     if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] != "CUST")) {
         header("location: login.php");
         exit(1);
@@ -29,12 +37,17 @@
             <h2 class="pt-3 display-6">Rate Experience</h2>
         </div>
         <?php
-        $odr_id = $_GET["odr_id"];
-        $query = "SELECT o.*, s.store_name, s.store_id FROM odr o INNER JOIN store s ON o.store_id = s.store_id WHERE o.odr_id = {$odr_id};";
-        $result = $mysqli->query($query);
-        $rowcount = mysqli_num_rows($result);
+        // $query = "SELECT o.*, s.store_name, s.store_id FROM odr o INNER JOIN store s ON o.store_id = s.store_id WHERE o.odr_id = {$odr_id};";
+        // $result = $mysqli->query($query);
+        // $rowcount = mysqli_num_rows($result);
+        $query = $mysqli->prepare("SELECT o.*, s.store_name, s.store_id FROM odr o INNER JOIN store s ON o.store_id = s.store_id WHERE o.odr_id =?;");
+        $query->bind_param('i', $odr_id);
+        $query->execute();
+        $result = $query->get_result();
+        $rowcount = $result->num_rows;
         if ($rowcount > 0) {
-            $arr = $mysqli->query($query)->fetch_array();
+            // $arr = $mysqli->query($query)->fetch_array();
+            $arr = $result->fetch_array();
             if ($arr['odr_rate_status'] == 0) {
         ?>
                 <div class="container d-flex justify-content-center mt-5">
