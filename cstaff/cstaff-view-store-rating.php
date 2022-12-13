@@ -65,6 +65,9 @@
                     }
                 ],
                 columnDefs: [{
+                    render: function(data, type, full, meta) {
+                        return "<div class='text-wrap width-200'>" + data + "</div>";
+                    },
                     width: '20%',
                     targets: 3
                 }],
