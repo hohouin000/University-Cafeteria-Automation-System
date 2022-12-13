@@ -4,7 +4,7 @@
 <head>
   <?php session_start();
   include("../conn_db.php");
-  if (isset($_SESSION["user_role"]) && !empty($_SESSION["user_role"])) {
+  if (isset($_SESSION["user_role"]) && !empty($_SESSION["user_role"]) && $_SESSION["user_role"] == "CSTAFF") {
     header("location: cstaff-home.php");
     exit(1);
   }

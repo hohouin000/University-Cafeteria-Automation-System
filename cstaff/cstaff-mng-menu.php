@@ -117,6 +117,9 @@
                             $('#form-add-menu-item')[0].reset();
                             $('#btn-modal-close-add').click();
                             $('#add-success-toast').toast('show')
+                        } else if (response.server_status == -1) {
+                            table.ajax.reload();
+                            $('#menuname-exist-toast').toast('show')
                         } else {
                             table.ajax.reload();
                             $('#form-add-menu-item')[0].reset();
@@ -223,12 +226,14 @@
                 var fileType = file.type;
                 var match = ['image/png'];
                 if (!(fileType == match[0])) {
-                    alert('Sorry, only PNG files are allowed.');
+                    //alert('Sorry, only PNG files are allowed.');
+                    alertify.alert('File Input Error', 'Sorry, only PNG files are allowed!', function() {});
                     $("input[name='mitem-pic']").val('');
                     return false;
                 }
                 if (this.files[0].size > 2097152) {
-                    alert("File is too big! File size must be less than 2mb!");
+                    //alert("File is too big! File size must be less than 2mb!");
+                    alertify.alert('File Input Error', 'File is too big! File size must be less than 2mb!', function() {});
                     $("input[name='mitem-pic']").val('');
                     return false;
                 };

@@ -11,7 +11,7 @@
     }
     ?>
     <link rel="stylesheet" href="../css/report.css">
-    <title>Store Settings| Cafeteria Staff</title>
+    <title>Store Settings | Cafeteria Staff</title>
 </head>
 
 <body class="d-flex flex-column">

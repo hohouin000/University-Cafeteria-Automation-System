@@ -134,6 +134,8 @@
                                 $('#store-exist-toast').toast('show')
                             } else if (response.server_status == -2) {
                                 $('#hour-invalid-toast').toast('show')
+                            } else if (response.server_status == -3) {
+                                $('#location-exist-toast').toast('show')
                             } else {
                                 table.ajax.reload();
                                 $('#form-add-store')[0].reset();
@@ -244,6 +246,8 @@
                                 $('#store-exist-toast').toast('show')
                             } else if (response.server_status == -2) {
                                 $('#hour-invalid-toast').toast('show')
+                            } else if (response.server_status == -3) {
+                                $('#location-exist-toast').toast('show')
                             } else {
                                 $('#edit-fail-toast').toast('show')
                             }
@@ -259,12 +263,14 @@
                 var fileType = file.type;
                 var match = ['image/png'];
                 if (!(fileType == match[0])) {
-                    alert('Sorry, only PNG files are allowed.');
+                    //alert('Sorry, only PNG files are allowed.');
+                    alertify.alert('File Input Error', 'Sorry, only PNG files are allowed!', function() {});
                     $("input[name='store-pic']").val('');
                     return false;
                 }
                 if (this.files[0].size > 2097152) {
-                    alert("File is too big! File size must be less than 2mb!");
+                    //alert("File is too big! File size must be less than 2mb!");
+                    alertify.alert('File Input Error', 'File is too big! File size must be less than 2mb!', function() {});
                     $("input[name='mitem-pic']").val('');
                     return false;
                 };

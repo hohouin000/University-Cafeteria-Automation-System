@@ -34,6 +34,15 @@ if (isset($_POST["mitem_name"], $_POST["mitem_price"], $_POST['mitem_status'], $
             exit(1);
         }
 
+        $queryValidate =  $mysqli->prepare("SELECT mitem_name FROM mitem WHERE mitem_name =? AND user_id <> ?;");
+        $queryValidate->bind_param('si', $mitem_name, $mitem_id);
+        $queryValidate->execute();
+        $result = $queryValidate->get_result();
+        if (mysqli_num_rows($result)) {
+            $response['server_status'] = -1;
+            echo json_encode($response);
+            exit(1);
+        }
         // $query = "UPDATE mitem SET mitem_name = '{$mitem_name}', mitem_price = {$mitem_price}, mitem_status = {$mitem_status}
         // WHERE mitem_id = {$mitem_id} AND store_id = {$store_id}";
         // $result = $mysqli->query($query);

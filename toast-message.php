@@ -254,15 +254,37 @@
         </div>
         <!-- END of Invalid Store Hour Toast Message -->
 
-        <!-- Lot or Store Name Existed Toast Message -->
+        <!-- Store Name Existed Toast Message -->
         <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="store-exist-toast">
             <div class="d-flex">
                 <div class="toast-body">
-                    Lot or Store Name Existed !
+                    Store Name Existed !
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
-        <!-- END of Lot or Store Name Existed  Toast Message -->
+        <!-- END of Store Name Existed  Toast Message -->
+
+        <!-- Location Existed Toast Message -->
+        <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="location-exist-toast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Location Existed !
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <!-- END of Location Existed Toast Message -->
+
+        <!-- Mitem Name Existed Toast Message -->
+        <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="menuname-exist-toast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Menu Item Name Existed !
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <!-- END of Mitem Name Existed Toast Message -->
     </div>
 </div>
