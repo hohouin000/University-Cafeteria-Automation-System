@@ -286,5 +286,16 @@
             </div>
         </div>
         <!-- END of Mitem Name Existed Toast Message -->
+
+         <!-- Invalid File Type Toast Message -->
+         <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" id="filetype-invalid-toast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Invalid File Type !
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <!-- END of Invalid File Type Toast Message -->
     </div>
 </div>

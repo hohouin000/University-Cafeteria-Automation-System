@@ -9,7 +9,7 @@ if ($_SESSION["user_role"] != "CSTAFF") {
 $uploadDir = '/img/menu/';
 
 // Allowed file types 
-$allowTypes = array('png','PNG');
+$allowTypes = array('png', 'PNG');
 if (isset($_POST["mitem-id"])) {
     if (!empty($_POST['mitem-id'])) {
         $mitem_id = mysqli_real_escape_string($mysqli, $_POST['mitem-id']);
@@ -38,6 +38,10 @@ if (isset($_POST["mitem-id"])) {
                     exit(1);
                 }
             }
+        } else {
+            $response['server_status'] = -4;
+            echo json_encode($response);
+            exit(1);
         }
     } else {
         $response['server_status'] = 0;

@@ -118,8 +118,9 @@
                             $('#btn-modal-close-add').click();
                             $('#add-success-toast').toast('show')
                         } else if (response.server_status == -1) {
-                            table.ajax.reload();
                             $('#menuname-exist-toast').toast('show')
+                        } else if (response.server_status == -4) {
+                            $('#filetype-invalid-toast').toast('show')
                         } else {
                             table.ajax.reload();
                             $('#form-add-menu-item')[0].reset();
@@ -211,6 +212,10 @@
                             table.ajax.reload();
                             $('#btn-modal-close-edit').click();
                             $('#edit-success-toast').toast('show')
+                        } else if (response.server_status == -1) {
+                            $('#menuname-exist-toast').toast('show')
+                        } else if (response.server_status == -4) {
+                            $('#filetype-invalid-toast').toast('show')
                         } else {
                             $('#btn-modal-close-edit').click();
                             $('#edit-fail-toast').toast('show')

@@ -88,7 +88,7 @@ if (isset($_POST['store-name'], $_POST['store-location'], $_POST['store-openhour
                 exit(1);
             }
         } else {
-            $response['server_status'] = 0;
+            $response['server_status'] = -4;
             echo json_encode($response);
             exit(1);
         }

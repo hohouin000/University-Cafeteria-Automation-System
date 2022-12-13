@@ -136,6 +136,8 @@
                                 $('#hour-invalid-toast').toast('show')
                             } else if (response.server_status == -3) {
                                 $('#location-exist-toast').toast('show')
+                            } else if (response.server_status == -4) {
+                                $('#filetype-invalid-toast').toast('show')
                             } else {
                                 table.ajax.reload();
                                 $('#form-add-store')[0].reset();
@@ -248,6 +250,8 @@
                                 $('#hour-invalid-toast').toast('show')
                             } else if (response.server_status == -3) {
                                 $('#location-exist-toast').toast('show')
+                            } else if (response.server_status == -4) {
+                                $('#filetype-invalid-toast').toast('show')
                             } else {
                                 $('#edit-fail-toast').toast('show')
                             }

@@ -37,7 +37,7 @@ if (isset($_POST['store-id'])) {
                 echo json_encode($response);
             }
         } else {
-            $response['server_status'] = 0;
+            $response['server_status'] = -4;
             echo json_encode($response);
         }
     } else {

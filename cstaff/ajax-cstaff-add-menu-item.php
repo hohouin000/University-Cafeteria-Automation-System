@@ -88,7 +88,7 @@ if (isset($_POST["mitem-name"], $_POST["mitem-price"], $_POST['mitem-status'])) 
             echo json_encode($response);
             exit(0);
         } else {
-            $response['server_status'] = 0;
+            $response['server_status'] = -4;
             echo json_encode($response);
             exit(0);
         }
