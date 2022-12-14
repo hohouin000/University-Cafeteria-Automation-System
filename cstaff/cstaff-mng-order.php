@@ -129,7 +129,9 @@
     <script>
         $(document).ready(function() {
             //Get Real Time Data, Refresh Table every n millisecond(s)
-            setInterval(function () {  $.fn.reloadTable()}, 10000); 
+            setInterval(function() {
+                $.fn.reloadTable()
+            }, 10000);
 
             $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
                 $($.fn.dataTable.tables(true)).DataTable()
@@ -178,6 +180,10 @@
 
                     },
                 ],
+                columnDefs: [{
+                    width: '30%',
+                    targets: 5
+                }],
                 scrollY: 200,
                 sScrollX: "100%",
                 scrollCollapse: true,
@@ -214,6 +220,10 @@
 
                     },
                 ],
+                columnDefs: [{
+                    width: '30%',
+                    targets: 5
+                }],
                 scrollY: 200,
                 scrollCollapse: true,
             });

@@ -66,7 +66,7 @@
                 ],
                 columnDefs: [{
                     render: function(data, type, full, meta) {
-                        return "<div class='text-wrap width-200'>" + data + "</div>";
+                        return "<span style='width:100px; word-wrap:break-word; display:inline-block;'> " + data + "</span>";
                     },
                     width: '20%',
                     targets: 3

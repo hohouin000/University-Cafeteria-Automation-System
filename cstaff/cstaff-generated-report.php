@@ -305,7 +305,7 @@
         const data = {
             labels: labels,
             datasets: [{
-                    label: 'Sub Total Sales (RM)',
+                    label: 'Total Sales (RM)',
                     data: <?php echo json_encode($sub_total) ?>,
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(93, 190, 255, 0.3)',
