@@ -7,6 +7,11 @@
     }
 
     define('SITE_ROOT',realpath(dirname(__FILE__)));
-    define('ADD_URL','https://ef6e-175-141-31-30.ap.ngrok.io/fyp/func-add-order.php');
-    define('FAILED_URL','https://ef6e-175-141-31-30.ap.ngrok.io/fyp/order-failed.php');
+    //Azure Deployment URL
+    define('ADD_URL','https://ucas.eastasia.cloudapp.azure.com/fyp/func-add-order.php');
+    define('FAILED_URL','https://ucas.eastasia.cloudapp.azure.com/fyp/order-failed.php');
+
+    //Localhost URL
+    // define('ADD_URL','https://localhost/fyp/func-add-order.php');
+    // define('FAILED_URL','https://localhost/fyp/order-failed.php');
     date_default_timezone_set('Asia/Kuala_Lumpur');
