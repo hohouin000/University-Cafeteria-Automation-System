@@ -174,7 +174,6 @@
                 scales: {
                     y: {
                         min: 0,
-                        max: 100,
                         ticks: {
                             callback: function(value) {
                                 return "RM" + value;
