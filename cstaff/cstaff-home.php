@@ -41,8 +41,12 @@
                         <p class="card-text my-2">
                             <span class="h6">
                                 <?php
-                                $query = "SELECT COUNT(*) AS orderCount FROM odr WHERE store_id = '{$store_id}' AND odr_status NOT IN ('CXLD','CMPLT');";
-                                $result = $mysqli->query($query)->fetch_array();
+                                // $query = "SELECT COUNT(*) AS orderCount FROM odr WHERE store_id = '{$store_id}' AND odr_status NOT IN ('CXLD','CMPLT');";
+                                // $result = $mysqli->query($query)->fetch_array();
+                                $query = $mysqli->prepare("SELECT COUNT(*) AS orderCount FROM odr WHERE store_id =? AND odr_status NOT IN ('CXLD','CMPLT');");
+                                $query->bind_param('i', $store_id);
+                                $query->execute();
+                                $result = $query->get_result()->fetch_array();
                                 echo $result["orderCount"];
                                 ?>
                             </span>
@@ -67,8 +71,12 @@
                         <p class="card-text my-2">
                             <span class="h6">
                                 <?php
-                                $query = "SELECT COUNT(*) AS itemCount FROM mitem WHERE store_id = '{$store_id}';";
-                                $result = $mysqli->query($query)->fetch_array();
+                                // $query = "SELECT COUNT(*) AS itemCount FROM mitem WHERE store_id = '{$store_id}';";
+                                // $result = $mysqli->query($query)->fetch_array();
+                                $query = $mysqli->prepare("SELECT COUNT(*) AS itemCount FROM mitem WHERE store_id =?;");
+                                $query->bind_param('i', $store_id);
+                                $query->execute();
+                                $result = $query->get_result()->fetch_array();
                                 echo $result["itemCount"];
                                 ?>
                             </span>
@@ -111,9 +119,13 @@
 
     <!-- Get Recent Sales Orders Results -->
     <?php
-    $query = "SELECT date_format(o.odr_compltime, '%e%b%Y') AS date_revenue, SUM(od.odr_detail_amount*od.odr_detail_price) AS menu_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id WHERE o.store_id = '{$store_id}' AND o.odr_status = 'CMPLT' GROUP BY YEAR(odr_compltime), Month(odr_compltime), Day(odr_compltime) ORDER BY (odr_compltime) DESC LIMIT 5;";
+    // $query = "SELECT date_format(o.odr_compltime, '%e%b%Y') AS date_revenue, SUM(od.odr_detail_amount*od.odr_detail_price) AS menu_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id WHERE o.store_id = '{$store_id}' AND o.odr_status = 'CMPLT' GROUP BY YEAR(odr_compltime), Month(odr_compltime), Day(odr_compltime) ORDER BY (odr_compltime) DESC LIMIT 5;";
 
-    $result = $mysqli->query($query);
+    // $result = $mysqli->query($query);
+    $query = $mysqli->prepare("SELECT date_format(o.odr_compltime, '%e%b%Y') AS date_revenue, SUM(od.odr_detail_amount*od.odr_detail_price) AS menu_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id WHERE o.store_id =? AND o.odr_status = 'CMPLT' GROUP BY YEAR(odr_compltime), Month(odr_compltime), Day(odr_compltime) ORDER BY (odr_compltime) DESC LIMIT 5;");
+    $query->bind_param('i', $store_id);
+    $query->execute();
+    $result = $query->get_result();
     $rowcount = mysqli_num_rows($result);
     if ($rowcount > 0) {
         while ($row = $result->fetch_array()) {
@@ -132,9 +144,13 @@
 
     <!-- Get Top Selling Items Results -->
     <?php
-    $query2 = "SELECT m.mitem_name AS menu_item, SUM(od.odr_detail_amount) AS total_volume FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON m.mitem_id = od.mitem_id WHERE o.store_id = '{$store_id}'  AND o.odr_status = 'CMPLT' GROUP BY od.mitem_id ORDER BY Total_Volume DESC LIMIT 3;";
+    // $query2 = "SELECT m.mitem_name AS menu_item, SUM(od.odr_detail_amount) AS total_volume FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON m.mitem_id = od.mitem_id WHERE o.store_id = '{$store_id}'  AND o.odr_status = 'CMPLT' GROUP BY od.mitem_id ORDER BY Total_Volume DESC LIMIT 3;";
 
-    $result2 = $mysqli->query($query2);
+    // $result2 = $mysqli->query($query2);
+    $query2 = $mysqli->prepare("SELECT m.mitem_name AS menu_item, SUM(od.odr_detail_amount) AS total_volume FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON m.mitem_id = od.mitem_id WHERE o.store_id =?  AND o.odr_status = 'CMPLT' GROUP BY od.mitem_id ORDER BY Total_Volume DESC LIMIT 3;");
+    $query2->bind_param('i', $store_id);
+    $query2->execute();
+    $result2 = $query2->get_result();
     $rowcount2 = mysqli_num_rows($result2);
 
     if ($rowcount2 > 0) {

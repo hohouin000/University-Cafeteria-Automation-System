@@ -41,8 +41,12 @@
             <p class="card-text my-2">
               <span class="h6">
                 <?php
-                $query = "SELECT COUNT(*) AS userCount FROM user WHERE user_id <> {$_SESSION['user_id']};";
-                $result = $mysqli->query($query)->fetch_array();
+                // $query = "SELECT COUNT(*) AS userCount FROM user WHERE user_id <> {$_SESSION['user_id']};";
+                // $result = $mysqli->query($query)->fetch_array();
+                $query = $mysqli->prepare("SELECT COUNT(*) AS userCount FROM user WHERE user_id <> ?;");
+                $query->bind_param('i', $_SESSION['user_id']);
+                $query->execute();
+                $result = $query->get_result()->fetch_array();
                 echo $result["userCount"];
                 ?>
               </span>

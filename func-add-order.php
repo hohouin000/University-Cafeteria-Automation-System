@@ -40,12 +40,12 @@ $new_store_open = $store_open_arr[0] . ":" . $store_open_arr[1];
 $store_close_arr = explode(":", $store_close);
 $new_store_close = $store_close_arr[0] . ":" . $store_close_arr[1];
 if (($store_arr["store_status"] == 1) && ($curr_time >= $new_store_open) && ($curr_time < $new_store_close)) {
-    $store_closed = 0;
+    $store_closed = false;
 } else {
-    $store_closed = 1;
+    $store_closed = true;
 }
 
-if ($store_closed == 0) {
+if (!$store_closed) {
     $query = $mysqli->prepare("INSERT INTO payment (user_id,payment_type,payment_amount) VALUES (?,?,?);");
     // $query = "INSERT INTO payment (user_id,payment_type,payment_amount) VALUES ({$_SESSION['user_id']},'{$payment_type}',{$total_amount});";
     $query->bind_param('isi', $_SESSION['user_id'], $payment_type, $total_amount);

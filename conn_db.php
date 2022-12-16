@@ -9,10 +9,10 @@ if ($mysqli->connect_errno) {
 
 define('SITE_ROOT', realpath(dirname(__FILE__)));
 //Azure Deployment URL
-define('ADD_URL', 'https://ucas.eastasia.cloudapp.azure.com/fyp/func-add-order.php');
-define('FAILED_URL', 'https://ucas.eastasia.cloudapp.azure.com/fyp/order-failed.php');
+// define('ADD_URL', 'https://ucas.eastasia.cloudapp.azure.com/fyp/func-add-order.php');
+// define('FAILED_URL', 'https://ucas.eastasia.cloudapp.azure.com/fyp/order-failed.php');
 
 //Localhost URL
-// define('ADD_URL','https://localhost/fyp/func-add-order.php');
-// define('FAILED_URL','https://localhost/fyp/order-failed.php');
+define('ADD_URL','http://localhost/fyp/func-add-order.php');
+define('FAILED_URL','http://localhost/fyp/order-failed.php');
 date_default_timezone_set('Asia/Kuala_Lumpur');

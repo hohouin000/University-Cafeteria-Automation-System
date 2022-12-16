@@ -71,9 +71,14 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id
-                                WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id
+                            //     WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id
+                            WHERE o.store_id =? AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?));");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if ($row["total_sales_revenue"] != NULL) {
                                 echo "RM " . $row["total_sales_revenue"];
@@ -98,9 +103,13 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_online_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id
-                                WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND p.payment_type = 'ONLINE' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_online_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id
+                            //     WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND p.payment_type = 'ONLINE' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_online_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id WHERE o.store_id =? AND odr_status = 'CMPLT' AND p.payment_type = 'ONLINE' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?));");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if ($row["total_online_sales_revenue"] != NULL) {
                                 echo "RM " . $row["total_online_sales_revenue"];
@@ -125,9 +134,13 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_offline_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id
-                                WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND p.payment_type = 'PAC' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_offline_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id
+                            //     WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND p.payment_type = 'PAC' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT SUM(od.odr_detail_amount*od.odr_detail_price) AS  total_offline_sales_revenue FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN payment p ON o.payment_id = p.payment_id WHERE o.store_id =? AND odr_status = 'CMPLT' AND p.payment_type = 'PAC' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?));");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if ($row["total_offline_sales_revenue"] != NULL) {
                                 echo "RM " . $row["total_offline_sales_revenue"];
@@ -152,9 +165,14 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT COUNT(*) AS number_of_order_placed FROM odr o
-                            WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT COUNT(*) AS number_of_order_placed FROM odr o
+                            // WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT COUNT(*) AS number_of_order_placed FROM odr o
+                            WHERE o.store_id =? AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?));");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if ($row["number_of_order_placed"] != 0) {
                                 echo $row["number_of_order_placed"] . " Order(s) Placed";
@@ -178,9 +196,13 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT COUNT(DISTINCT o.user_id) AS number_of_customer FROM odr o 
-                              WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT COUNT(DISTINCT o.user_id) AS number_of_customer FROM odr o 
+                            //   WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}'));";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT COUNT(DISTINCT o.user_id) AS number_of_customer FROM odr o WHERE o.store_id =? AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?));");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if ($row["number_of_customer"] != 0) {
                                 echo $row["number_of_customer"] . " Customer(s) Visited";
@@ -203,8 +225,12 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT m.mitem_name as menu_item, SUM(od.odr_detail_amount) as total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY mitem_name ORDER BY total DESC LIMIT 1;";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT m.mitem_name as menu_item, SUM(od.odr_detail_amount) as total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY mitem_name ORDER BY total DESC LIMIT 1;";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT m.mitem_name as menu_item, SUM(od.odr_detail_amount) as total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id =? AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?)) GROUP BY mitem_name ORDER BY total DESC LIMIT 1;");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if (isset($row["menu_item"])) {
                                 echo $row["menu_item"];
@@ -227,8 +253,12 @@
                         </h6>
                         <p class="card-text my-2">
                             <?php
-                            $query = "SELECT EXTRACT(HOUR from o.odr_placedtime) as peak_hour, count(*) as cnt FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY EXTRACT(HOUR from o.odr_placedtime) ORDER BY count(*) DESC LIMIT 1;";
-                            $result = $mysqli->query($query);
+                            // $query = "SELECT EXTRACT(HOUR from o.odr_placedtime) as peak_hour, count(*) as cnt FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY EXTRACT(HOUR from o.odr_placedtime) ORDER BY count(*) DESC LIMIT 1;";
+                            // $result = $mysqli->query($query);
+                            $query = $mysqli->prepare("SELECT EXTRACT(HOUR from o.odr_placedtime) as peak_hour, count(*) as cnt FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id =? AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?)) GROUP BY EXTRACT(HOUR from o.odr_placedtime) ORDER BY count(*) DESC LIMIT 1;");
+                            $query->bind_param('iss', $store_id, $start_date, $end_date);
+                            $query->execute();
+                            $result = $query->get_result();
                             $row = $result->fetch_array();
                             if (isset($row["peak_hour"])) {
                                 $time = $row['peak_hour'] . ":00";
@@ -257,8 +287,12 @@
     <?php include('../footer.php'); ?>
     <?php include("../toast-message.php"); ?>
     <?php
-    $query = "SELECT m.mitem_name, SUM(od.odr_detail_amount) AS total_amount, SUM(od.odr_detail_amount*od.odr_detail_price) AS sub_total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY mitem_name ORDER BY total_amount, sub_total;";
-    $result = $mysqli->query($query);
+    // $query = "SELECT m.mitem_name, SUM(od.odr_detail_amount) AS total_amount, SUM(od.odr_detail_amount*od.odr_detail_price) AS sub_total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id = {$store_id} AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE('{$start_date}') AND DATE('{$end_date}')) GROUP BY mitem_name ORDER BY total_amount, sub_total;";
+    // $result = $mysqli->query($query);
+    $query = $mysqli->prepare("SELECT m.mitem_name, SUM(od.odr_detail_amount) AS total_amount, SUM(od.odr_detail_amount*od.odr_detail_price) AS sub_total FROM odr o INNER JOIN odr_detail od ON o.odr_id = od.odr_id INNER JOIN mitem m ON od.mitem_id = m.mitem_id WHERE o.store_id =? AND odr_status = 'CMPLT' AND (DATE(odr_compltime) BETWEEN DATE(?) AND DATE(?)) GROUP BY mitem_name ORDER BY total_amount, sub_total;");
+    $query->bind_param('iss', $store_id, $start_date, $end_date);
+    $query->execute();
+    $result = $query->get_result();
     $rowcount = mysqli_num_rows($result);
     if ($rowcount > 0) {
         while ($row = $result->fetch_array()) {
@@ -351,7 +385,7 @@
                 },
                 scales: {
                     y: {
-                       beginAtZero: true
+                        beginAtZero: true
                     }
                 },
                 elements: {

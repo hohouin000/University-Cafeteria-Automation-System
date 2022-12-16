@@ -65,9 +65,9 @@
             $store_close_arr = explode(":", $store_close);
             $new_store_close = $store_close_arr[0] . ":" . $store_close_arr[1];
             if (($arr["store_status"] == 1) && ($curr_time >= $new_store_open) && ($curr_time < $new_store_close)) {
-                $store_closed = 0;
+                $store_closed = false;
             } else {
-                $store_closed = 1;
+                $store_closed = true;
             }
         ?>
             <section class="h-100 gradient-custom">
@@ -171,7 +171,7 @@
                                             <span><strong><?php printf('RM %0.2f', $sum_arr['total_price']); ?></strong></span>
                                         </li>
                                     </ul>
-                                    <?php if ($store_closed == 0) { ?>
+                                    <?php if (!$store_closed) { ?>
                                         <form action="func-add-order.php" method="POST">
                                             <button type="submit" class="btn btn-primary btn-sm btn-block" title="btn-pay-counter" name="btn-pay-counter" id="btn-pay-counter">
                                                 Pay at counter
