@@ -1,4 +1,5 @@
 <?php
+//for localhost
 $mysqli = new mysqli("localhost", "root", "", "ucas");
 
 if ($mysqli->connect_errno) {

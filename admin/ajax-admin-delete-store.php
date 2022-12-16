@@ -16,15 +16,14 @@ if (isset($_POST['store_id'])) {
         $query->execute();
         $result = $query->get_result();
         $row = mysqli_fetch_array($result);
-        $target_file = $target_dir . $row['store_pic'];
-        unlink(SITE_ROOT . $target_file);
-
         // $query = "DELETE FROM store WHERE store_id = '{$store_id}';";
         // $result = $mysqli->query($query);
         $query = $mysqli->prepare("DELETE FROM store WHERE store_id =?;");
         $query->bind_param('i', $store_id);
         $result = $query->execute();
         if ($result) {
+            $target_file = $target_dir . $row['store_pic'];
+            unlink(SITE_ROOT . $target_file);
             $response['server_status'] = 1;
         } else {
             $response['server_status'] = 0;
