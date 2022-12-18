@@ -62,7 +62,7 @@
                 <div class="form">
                     <form class="mt-3" id="form-atc" method="POST" action="func-update-cart.php">
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control text-center border-secondary" id="amount" value="<?php if (!empty($cart_result["cart_amount"])) echo $cart_result["cart_amount"] ?>" name="amount" value="1" min="1" max="99">
+                            <input type="number" class="form-control text-center border-secondary" id="amount" value="<?php if (!empty($cart_result["cart_amount"])) echo $cart_result["cart_amount"] ?>" name="amount" value="1" min="1" max="99" required>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="remark" value="<?php if (!empty($cart_result["cart_remark"])) echo $cart_result["cart_remark"] ?>" name="remark" placeholder=" ">

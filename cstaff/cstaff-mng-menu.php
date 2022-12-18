@@ -275,7 +275,7 @@
                             </div>
                         </div>
                         <div class="mb-2">
-                            <label for="formFile" class="form-label">Upload Store Picture</label>
+                            <label for="formFile" class="form-label">Upload Menu Item Picture</label>
                             <input class="form-control" type="file" accept="image/png" name="mitem-pic" required>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-modal-close-add">Close</button>

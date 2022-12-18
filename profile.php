@@ -138,7 +138,7 @@
                             <input type="password" class="form-control" id="form-new-confirm-pwd" name="new-confirm-pwd" required>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-modal-close-change-pwd">Close</button>
-                        <button type="submit" class="btn btn-primary" id="form-btn-change-pwd">Edit</button>
+                        <button type="submit" class="btn btn-primary" id="form-btn-change-pwd">Change Password</button>
                     </form>
                 </div>
             </div>
