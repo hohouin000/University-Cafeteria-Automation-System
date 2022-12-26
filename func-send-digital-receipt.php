@@ -359,10 +359,10 @@ if (isset($_SESSION["server_status"], $_GET["odr"])) {
             $mail->SMTPAuth = true;
             $mail->SMTPSecure = "tls";
             $mail->Port = "587";
-            $mail->Username = "ucastest000@gmail.com";
-            $mail->Password = "qzegadfeopjlktvs";
+            $mail->Username = "ucastest2000@gmail.com";
+            $mail->Password = "ffsjqqsmpluwfrep";
             $mail->Subject = "Digital Receipt: " . $odr_ref;
-            $mail->setFrom('ucastest000@gmail.com');
+            $mail->setFrom('ucastest2000@gmail.com');
             $mail->isHTML(true);
             $mail->Body = $page;
             $mail->addAddress($user_email);
