@@ -19,6 +19,19 @@
     <div class="container px-5 py-4">
         <div class="container p-2 pb-0 mt-5 pt-3">
             <h2 class="pt-3 display-6">Order History</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                </symbol>
+            </svg>
+            <div class="alert alert-primary d-flex align-items-center mt-3" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+                    <use xlink:href="#info-fill" />
+                </svg>
+                <div>
+                    Important Note: Payment has to be made before food order can be prepare.
+                </div>
+            </div>
             <?php
             if (isset($_SESSION['server_status'])) {
                 if ($_SESSION['server_status'] == 1) {

@@ -192,6 +192,7 @@
                         if (response.server_status == 1) {
                             $('#btn-modal-close-edit').click();
                             $("#profile-card").load(" #profile-card");
+                            $("#nav-username").load(" #nav-username");
                             $('#edit-success-toast').toast('show')
                         } else if (response.server_status == -2) {
                             $('#email-invalid-toast').toast('show')

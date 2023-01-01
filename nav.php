@@ -50,7 +50,7 @@
 
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="nav-username">
                             <a href="profile.php" class="nav-link px-2 text-dark">Welcome back, <?php echo " " .  $_SESSION["user_fname"] ?></a>
                         </li>
                         <li class="nav-item">
